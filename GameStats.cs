@@ -32,7 +32,7 @@ namespace ConsoleApp129
 
         public void AddXP(int amount)
         {
-            XP -= amount;
+            XP += amount;
 
             if (XP < 0) XP = 0;
             while (XP < (Level - 1) * 10 && Level > 1)
