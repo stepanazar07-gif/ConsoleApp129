@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Door.cs" />
     <Compile Include="GameStats.cs" />
+    <Compile Include="LevelManager.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="MapObject.cs" />
     <Compile Include="Menu.cs" />

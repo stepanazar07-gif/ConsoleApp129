@@ -24,9 +24,13 @@ namespace ConsoleApp129
     internal class Hero : Person
     {
         public GameStats Stats { get; private set; }
+        public int X { get; set; } 
+        public int Y { get; set; }      
 
         public Hero(int X, int Y) : base(X, Y)
         {
+            this.X = X;
+            this.Y = Y;
             Stats = new GameStats();
         }
 
@@ -39,8 +43,8 @@ namespace ConsoleApp129
 
     internal class Enemy : Person
     {
-        public int Damage { get; private set; }
-        public int XPReward { get; private set; }
+        public int Damage { get;  set; }
+        public int XPReward { get;  set; }
 
         public Enemy(int X, int Y) : base(X, Y)
         {

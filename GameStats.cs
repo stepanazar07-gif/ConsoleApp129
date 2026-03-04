@@ -22,24 +22,29 @@ namespace ConsoleApp129
         public void TakeDamage(int damage)
         {
             int actualDamage = damage - Armor;
-            if (actualDamage < 1) actualDamage = 1;
+            if (actualDamage < 1) actualDamage = 1; 
             HP -= actualDamage;
             if (HP < 0) HP = 0;
+
+            Console.SetCursorPosition(0, 28);
+            Console.WriteLine($"⚔ Получено {actualDamage} урона (блокировано {Armor})   ");
         }
 
         public void AddXP(int amount)
         {
-            XP += amount;
-            if (XP >= Level * 10)
+            XP -= amount;
+
+            if (XP < 0) XP = 0;
+            while (XP < (Level - 1) * 10 && Level > 1)
             {
-                Level++;
-                MaxHP += 10;
-                HP = MaxHP;
-                Armor += 2;
-                Console.WriteLine($"*** УРОВЕНЬ {Level}! ***");
-                Console.WriteLine($"HP: {MaxHP}, Броня: {Armor}");
+                Level--;
+                MaxHP -= 10;
+                if (HP > MaxHP) HP = MaxHP;
+                Armor -= 2;
+                if (Armor < 0) Armor = 0;
             }
         }
+
 
         public void Heal(int amount)
         {
