@@ -10,10 +10,16 @@ namespace ConsoleApp129
     {
         Random rand = new Random();
         MapObject[,] map = new MapObject[25, 25];
+        private int heroX;
+        private int heroY;
+
+   
+        private char[,] backBuffer = new char[25, 25];
+        private ConsoleColor[,] colorBuffer = new ConsoleColor[25, 25];
 
         public void Map_generation()
         {
-            // Сначала заполняем всё полем
+        
             for (int i = 0; i < map.GetLength(0); i++)
             {
                 for (int j = 0; j < map.GetLength(1); j++)
@@ -22,17 +28,15 @@ namespace ConsoleApp129
                 }
             }
 
-            // ========== ГЕНЕРАЦИЯ ЛЕСА (100% появление) ==========
-            int treeCount = rand.Next(15, 25); // 15-25 деревьев
+          
+            int treeCount = rand.Next(15, 25);
             for (int t = 0; t < treeCount; t++)
             {
                 int x = rand.Next(0, map.GetLength(0));
                 int y = rand.Next(0, map.GetLength(1));
 
-                // Не ставим на героя
                 if (!(x == map.GetLength(0) / 2 && y == map.GetLength(1) / 2))
                 {
-                    // Ставим только на Field
                     if (map[x, y] is Field)
                     {
                         map[x, y] = new Tree();
@@ -40,8 +44,8 @@ namespace ConsoleApp129
                 }
             }
 
-            // ========== ГЕНЕРАЦИЯ ГОР (100% появление) ==========
-            int mountainCount = rand.Next(8, 15); // 8-15 гор
+        
+            int mountainCount = rand.Next(8, 15);
             for (int m = 0; m < mountainCount; m++)
             {
                 int x = rand.Next(0, map.GetLength(0));
@@ -56,7 +60,7 @@ namespace ConsoleApp129
                 }
             }
 
-            // ========== СТАВИМ ВРАГОВ ==========
+      
             int enemyCount = 0;
             while (enemyCount < 8)
             {
@@ -71,12 +75,53 @@ namespace ConsoleApp129
                 }
             }
 
-            // ========== СТАВИМ ГЕРОЯ ==========
-            map[map.GetLength(0) / 2, map.GetLength(1) / 2] = new Hero(map.GetLength(0) / 2, map.GetLength(1) / 2);
+        
+            heroX = map.GetLength(0) / 2;
+            heroY = map.GetLength(1) / 2;
+            map[heroX, heroY] = new Hero(heroX, heroY);
+
+     
+            for (int i = 0; i < map.GetLength(0); i++)
+            {
+                for (int j = 0; j < map.GetLength(1); j++)
+                {
+                    backBuffer[i, j] = ' ';
+                    colorBuffer[i, j] = ConsoleColor.White;
+                }
+            }
         }
 
         public void Drawing_the_map()
         {
+ 
+            for (int i = 0; i < map.GetLength(0); i++)
+            {
+                for (int j = 0; j < map.GetLength(1); j++)
+                {
+                  
+                    char currentChar = map[i, j].Rendering_on_the_map();
+
+                    
+                    backBuffer[i, j] = currentChar;
+                }
+            }
+
+        
+            Console.SetCursorPosition(0, 0);
+
+            for (int i = 0; i < map.GetLength(0); i++)
+            {
+                for (int j = 0; j < map.GetLength(1); j++)
+                {
+                  
+                    map[i, j].Rendering_on_the_map();
+                    Console.Write(backBuffer[i, j] + " ");
+                    Console.ResetColor();
+                }
+                Console.WriteLine();
+            }
+
+           
             int enemyCount = 0;
             int treeCount = 0;
             int mountainCount = 0;
@@ -85,16 +130,35 @@ namespace ConsoleApp129
             {
                 for (int j = 0; j < map.GetLength(1); j++)
                 {
-                    Console.Write(map[i, j].Rendering_on_the_map() + " ");
-                    Console.ResetColor();
-
                     if (map[i, j] is Enemy) enemyCount++;
                     if (map[i, j] is Tree) treeCount++;
                     if (map[i, j] is Mountain) mountainCount++;
                 }
-                Console.WriteLine();
             }
+
             Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount}");
+        }
+
+        public void CheckCombat(Hero hero)
+        {
+            for (int i = 0; i < map.GetLength(0); i++)
+            {
+                for (int j = 0; j < map.GetLength(1); j++)
+                {
+                    if (map[i, j] is Enemy enemy)
+                    {
+                        if (Math.Abs(i - heroX) + Math.Abs(j - heroY) == 1)
+                        {
+                            hero.Stats.TakeDamage(enemy.Damage);
+
+                            Console.SetCursorPosition(0, map.GetLength(0) + 2);
+                            Console.Write($"⚔ Бой! Получено {enemy.Damage} урона      ");
+
+                            map[i, j] = new Field();
+                        }
+                    }
+                }
+            }
         }
 
         public void MovePersons()
@@ -119,7 +183,6 @@ namespace ConsoleApp129
                             case 3: newY = (j + 1) % map.GetLength(1); break;
                         }
 
-                        // Враги могут ходить только по полю
                         if (newMap[newX, newY] is Field)
                         {
                             newMap[newX, newY] = map[i, j];
@@ -152,11 +215,13 @@ namespace ConsoleApp129
                             case ConsoleKey.RightArrow: newY = (j + 1) % map.GetLength(1); break;
                         }
 
-                        // Герой может ходить только по полю
                         if (newMap[newX, newY] is Field)
                         {
                             newMap[newX, newY] = map[i, j];
                             newMap[i, j] = new Field();
+
+                            heroX = newX;
+                            heroY = newY;
                         }
                     }
                 }

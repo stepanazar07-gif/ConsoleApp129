@@ -11,9 +11,9 @@ namespace ConsoleApp129
         int pointX;
         int pointY;
 
-        public Person(int X,int Y)
+        public Person(int X, int Y)
         {
-            pointX = X; pointY = Y; 
+            pointX = X; pointY = Y;
         }
         public override char Rendering_on_the_map()
         {
@@ -23,10 +23,13 @@ namespace ConsoleApp129
 
     internal class Hero : Person
     {
+        public GameStats Stats { get; private set; }
+
         public Hero(int X, int Y) : base(X, Y)
         {
-
+            Stats = new GameStats();
         }
+
         public override char Rendering_on_the_map()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -36,13 +39,19 @@ namespace ConsoleApp129
 
     internal class Enemy : Person
     {
+        public int Damage { get; private set; }
+        public int XPReward { get; private set; }
+
         public Enemy(int X, int Y) : base(X, Y)
         {
+            Damage = 3;
+            XPReward = 5;
         }
+
         public override char Rendering_on_the_map()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            return base.Rendering_on_the_map();
+            return '☺';
         }
     }
 }

@@ -13,7 +13,7 @@ namespace ConsoleApp129
 
     internal class Wall : MapObject
     {
-
+        
         public override char Rendering_on_the_map()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -63,6 +63,6 @@ namespace ConsoleApp129
             return '█';
         }
     }
-}
+    }
 
 
