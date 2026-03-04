@@ -95,7 +95,7 @@ namespace ConsoleApp129
                             if (newMap[newX, newY] is Field)
                             {
                                 newMap[newX, newY] = map[i, j];
-                                newMap[i, j] = new Field();
+                                newMap[i, j] = new Field();  
                             }
                         }
                     }

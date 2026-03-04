@@ -13,7 +13,7 @@ namespace ConsoleApp129
 
     internal class Wall : MapObject
     {
-        
+
         public override char Rendering_on_the_map()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -36,4 +36,33 @@ namespace ConsoleApp129
             return 'T';
         }
     }
+
+    internal class Mountain : MapObject
+    {
+        public override char Rendering_on_the_map()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            return '▲';
+        }
+    }
+
+    internal class RoomFloor : MapObject
+    {
+        public override char Rendering_on_the_map()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            return '·';
+        }
+    }
+
+    internal class RoomWall : MapObject
+    {
+        public override char Rendering_on_the_map()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            return '█';
+        }
+    }
 }
+
+
