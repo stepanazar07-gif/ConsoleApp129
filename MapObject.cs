@@ -33,7 +33,7 @@ namespace ConsoleApp129
         public override char Rendering_on_the_map()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            return 'T';
+            return '♣';
         }
     }
 
