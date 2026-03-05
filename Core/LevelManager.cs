@@ -10,7 +10,7 @@ namespace ConsoleApp129
 {
     internal class LevelManager
     {
-        public int CurrentLevel { get; private set; }
+        public int CurrentLevel { get; private set; } 
         public bool DoorOpened { get; private set; }
 
         private int doorX;
