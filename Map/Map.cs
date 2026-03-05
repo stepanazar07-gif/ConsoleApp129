@@ -169,7 +169,7 @@
             {
                 MapObject[,] newMap = new MapObject[map.GetLength(0), map.GetLength(1)];
                 Array.Copy(map, newMap, map.Length);
-
+                
                 for (int i = 0; i < map.GetLength(0); i++)
                 {
                     for (int j = 0; j < map.GetLength(1); j++)
