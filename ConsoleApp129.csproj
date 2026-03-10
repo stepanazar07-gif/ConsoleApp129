@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\NewLevel1.cs" />
     <Compile Include="Entities\Door.cs" />
     <Compile Include="Core\GameStats.cs" />
     <Compile Include="Core\LevelManager.cs" />

@@ -62,6 +62,66 @@ namespace ConsoleApp129
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             return '█';
         }
+       
+        internal class IceMountain : MapObject
+        {
+            public override char Rendering_on_the_map()
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                return '▲';
+            }
+        }
+
+        
+        internal class SnowTree : MapObject
+        {
+            public override char Rendering_on_the_map()
+            {
+                Console.ForegroundColor = ConsoleColor.White; 
+                return '❄';  
+            }
+        }
+
+        
+        internal class Snowdrift : MapObject
+        {
+            public override char Rendering_on_the_map()
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;  
+                return '⛄';
+            }
+        }
+
+        
+        internal class WinterEnemy : Enemy  
+        {
+            public WinterEnemy(int x, int y) : base(x, y) { } 
+
+            public override char Rendering_on_the_map()
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                return '♔';
+            }
+        }
+
+       
+        internal class WinterHero : Hero  
+        {
+            public WinterHero(int x, int y) : base(x, y)
+            {
+              
+                Stats.MaxHP = 60;  
+                Stats.HP = 60;     
+                Stats.Armor = 15; 
+            }
+
+            public override char Rendering_on_the_map()
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                return '⛄'; 
+            }
+                
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using ConsoleApp129.Core;
 
 namespace ConsoleApp129
 {
@@ -14,7 +15,7 @@ namespace ConsoleApp129
             Console.CursorVisible = false;
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WindowWidth = 60;
-            Console.WindowHeight = 35;
+            Console.WindowHeight = 40;
 
             while (true)
             {
@@ -75,25 +76,17 @@ namespace ConsoleApp129
                 Console.WriteLine($"Уровень подземелья: {levelManager.CurrentLevel}");
                 Console.WriteLine("F5 - сохранить | ESC - меню | Стрелки - движение");
 
-            
                 levelManager.CheckAllEnemiesDefeated(gameMap);
+                gameMap.CheckDoorEntry(player, levelManager);
 
-         
-                if (levelManager.CheckDoorEntered(player.X, player.Y))
-                {
-                    levelManager.NextLevel(gameMap, player);
-                    continue;
-                }
-
-          
                 if (player.Stats.HP <= 0)
                 {
                     Console.SetCursorPosition(0, 29);
-                    Console.WriteLine("💀 ТЫ УМЕР! Возрождение на новом уровне...   ");
+                    Console.WriteLine("💀 ТЫ УМЕР! Возрождение...   ");
                     Thread.Sleep(1500);
 
                     player.Stats.HP = player.Stats.MaxHP;
-                    levelManager.NextLevel(gameMap, player);
+                    gameMap.GenerateNewLevel(levelManager.CurrentLevel);
                     continue;
                 }
 
@@ -105,8 +98,12 @@ namespace ConsoleApp129
                 if (keyInfo.Key == ConsoleKey.F5)
                 {
                     SaveSystem.SaveGame(player, gameMap);
+                    Console.SetCursorPosition(0, 30);
+                    Console.WriteLine("Игра сохранена!          ");
                     continue;
                 }
+
+                // БЛОК С КЛАВИШЕЙ X ПОЛНОСТЬЮ УДАЛЕН
 
                 if (keyInfo.Key == ConsoleKey.UpArrow ||
                     keyInfo.Key == ConsoleKey.DownArrow ||
@@ -131,10 +128,7 @@ namespace ConsoleApp129
             Console.WriteLine("Дверь: 🚪 - выход на уровень");
             Console.WriteLine("\n❤ HP - здоровье");
             Console.WriteLine("🛡 Броня - уменьшает урон");
-            Console.WriteLine("⭐ XP - опыт за убийства");
-            Console.WriteLine("🎯 Уровень героя - растет с опытом");
             Console.WriteLine("\nУбей всех врагов - откроется дверь!");
-            Console.WriteLine("Если умрешь - возродишься на новом уровне");
             Console.WriteLine("\nУправление: стрелки, ESC - меню");
             Console.WriteLine("Сохранение: F5");
             Console.WriteLine("\nНажми любую клавишу...");

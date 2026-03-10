@@ -10,7 +10,8 @@ namespace ConsoleApp129
     internal class Door : MapObject
     {
         public bool IsOpen { get; set; }
-
+        public int X { get; set; }  
+        public int Y { get; set; }
         public Door()
         {
             IsOpen = false;

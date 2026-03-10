@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Emit;
 
 namespace ConsoleApp129
 {
@@ -8,7 +9,12 @@ namespace ConsoleApp129
         public int MaxHP { get; set; }
         public int Armor { get; set; }
         public int XP { get; set; }
+
         public int Level { get; set; }
+
+
+
+
 
         public GameStats()
         {
@@ -17,6 +23,15 @@ namespace ConsoleApp129
             Armor = 10;
             XP = 0;
             Level = 1;
+            
+
+
+        }
+        public void LevelUp()
+        {
+          
+            MaxHP += 10;
+            HP = MaxHP;
         }
 
         public void TakeDamage(int damage)
@@ -30,22 +45,11 @@ namespace ConsoleApp129
             Console.WriteLine($"⚔ Получено {actualDamage} урона (блокировано {Armor})   ");
         }
 
-        public void AddXP(int amount)
-        {
-            XP += amount;
-
-            if (XP < 0) XP = 0;
-            while (XP < (Level - 1) * 10 && Level > 1)
-            {
-                Level--;
-                MaxHP -= 10;
-                if (HP > MaxHP) HP = MaxHP;
-                Armor -= 2;
-                if (Armor < 0) Armor = 0;
-            }
-        }
 
 
+       
+        
+       
         public void Heal(int amount)
         {
             HP += amount;
@@ -54,7 +58,11 @@ namespace ConsoleApp129
 
         public void ShowStats()
         {
-            Console.WriteLine($"❤ HP: {HP}/{MaxHP} | 🛡 Броня: {Armor} | ⭐ XP: {XP}/{Level * 10} | 🎯 Уровень: {Level}");
+
+
+            Console.WriteLine($"❤ HP: {HP}/{MaxHP} | 🛡 Броня: {Armor} | 🎯 Уровень: {Level}");
         }
+       
+
     }
 }

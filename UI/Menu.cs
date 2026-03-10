@@ -45,5 +45,7 @@ internal class Menu
         } while (key != ConsoleKey.Enter);
 
         return selected;
+        
     }
+    
 }
