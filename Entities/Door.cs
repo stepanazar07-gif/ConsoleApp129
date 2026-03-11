@@ -1,34 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿    using System;
 
-
-namespace ConsoleApp129
-{
-    internal class Door : MapObject
+    namespace ConsoleApp129
     {
-        public bool IsOpen { get; set; }
-        public int X { get; set; }  
-        public int Y { get; set; }
-        public Door()
+        internal class Door : MapObject
         {
-            IsOpen = false;
-        }
+            public bool IsOpen { get; set; }
+            public int X { get; set; }
+            public int Y { get; set; }
 
-        public override char Rendering_on_the_map()
-        {
-            if (IsOpen)
+            public Door()
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                return '⬚'; 
+                IsOpen = false;
             }
-            else
+
+            public override char Rendering_on_the_map()
             {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                return '█'; 
+                if (IsOpen)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    return '⬚';
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    return '█';
+                }
             }
         }
     }
-}

@@ -73,16 +73,34 @@ namespace ConsoleApp129
 
                 Console.SetCursorPosition(0, 26);
                 player.Stats.ShowStats();
-                Console.WriteLine($"Уровень подземелья: {levelManager.CurrentLevel}");
+                Console.WriteLine("Этаж: " + levelManager.CurrentLevel);
                 Console.WriteLine("F5 - сохранить | ESC - меню | Стрелки - движение");
 
-                levelManager.CheckAllEnemiesDefeated(gameMap);
-                gameMap.CheckDoorEntry(player, levelManager);
+                levelManager.CheckEnemies(gameMap);
+
+                if (levelManager.HeroOnDoor(player.X, player.Y))
+                {
+                    if (levelManager.CurrentLevel == 1)
+                    {
+                        NewLevel1 winterLevel = new NewLevel1();
+                        winterLevel.Map_generation();
+                        gameMap = winterLevel;
+                        levelManager.CurrentLevel = 2;
+                    }
+                    else
+                    {
+                        levelManager.NextLevel(gameMap, player);
+                    }
+
+                    player.X = 12;
+                    player.Y = 12;
+                    continue;
+                }
 
                 if (player.Stats.HP <= 0)
                 {
                     Console.SetCursorPosition(0, 29);
-                    Console.WriteLine("💀 ТЫ УМЕР! Возрождение...   ");
+                    Console.WriteLine("💀 ТЫ УМЕР! Возрождение...");
                     Thread.Sleep(1500);
 
                     player.Stats.HP = player.Stats.MaxHP;
@@ -98,12 +116,8 @@ namespace ConsoleApp129
                 if (keyInfo.Key == ConsoleKey.F5)
                 {
                     SaveSystem.SaveGame(player, gameMap);
-                    Console.SetCursorPosition(0, 30);
-                    Console.WriteLine("Игра сохранена!          ");
                     continue;
                 }
-
-                // БЛОК С КЛАВИШЕЙ X ПОЛНОСТЬЮ УДАЛЕН
 
                 if (keyInfo.Key == ConsoleKey.UpArrow ||
                     keyInfo.Key == ConsoleKey.DownArrow ||

@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp129
 {
-    internal class Person : MapObject
+    internal abstract class Person : MapObject
     {
-        int pointX;
-        int pointY;
+        protected int pointX;
+        protected int pointY;
 
         public Person(int X, int Y)
         {
-            pointX = X; pointY = Y;
+            pointX = X;
+            pointY = Y;
         }
+
         public override char Rendering_on_the_map()
         {
             return '☺';
@@ -45,7 +43,6 @@ namespace ConsoleApp129
     {
         public int Damage { get; set; }
 
-
         public Enemy(int X, int Y) : base(X, Y)
         {
             Damage = 3;
@@ -55,6 +52,37 @@ namespace ConsoleApp129
         {
             Console.ForegroundColor = ConsoleColor.Red;
             return '☺';
+        }
+    }
+
+    
+    internal class WinterHero : Hero
+    {
+        public WinterHero(int x, int y) : base(x, y)
+        {
+            Stats.MaxHP = 60;
+            Stats.HP = 60;
+            Stats.Armor = 15;
+        }
+
+        public override char Rendering_on_the_map()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            return '⛄';
+        }
+    }
+
+    internal class WinterEnemy : Enemy
+    {
+        public WinterEnemy(int x, int y) : base(x, y)
+        {
+            Damage = 5;
+        }
+
+        public override char Rendering_on_the_map()
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            return '☻';
         }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp129
 {
@@ -13,13 +9,13 @@ namespace ConsoleApp129
 
     internal class Wall : MapObject
     {
-
         public override char Rendering_on_the_map()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             return '+';
         }
     }
+
     internal class Field : MapObject
     {
         public override char Rendering_on_the_map()
@@ -28,12 +24,13 @@ namespace ConsoleApp129
             return '.';
         }
     }
+
     internal class Tree : MapObject
     {
         public override char Rendering_on_the_map()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            return '♣';  
+            return '♣';
         }
     }
 
@@ -42,87 +39,26 @@ namespace ConsoleApp129
         public override char Rendering_on_the_map()
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            return '▲';  
+            return '▲';
         }
     }
 
-    internal class RoomFloor : MapObject
+    
+    internal class IceMountain : MapObject
     {
         public override char Rendering_on_the_map()
         {
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            return '·';
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            return '▲';
         }
     }
 
-    internal class RoomWall : MapObject
+    internal class SnowTree : MapObject
     {
         public override char Rendering_on_the_map()
         {
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            return '█';
-        }
-       
-        internal class IceMountain : MapObject
-        {
-            public override char Rendering_on_the_map()
-            {
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                return '▲';
-            }
-        }
-
-        
-        internal class SnowTree : MapObject
-        {
-            public override char Rendering_on_the_map()
-            {
-                Console.ForegroundColor = ConsoleColor.White; 
-                return '❄';  
-            }
-        }
-
-        
-        internal class Snowdrift : MapObject
-        {
-            public override char Rendering_on_the_map()
-            {
-                Console.ForegroundColor = ConsoleColor.Cyan;  
-                return '⛄';
-            }
-        }
-
-        
-        internal class WinterEnemy : Enemy  
-        {
-            public WinterEnemy(int x, int y) : base(x, y) { } 
-
-            public override char Rendering_on_the_map()
-            {
-                Console.ForegroundColor = ConsoleColor.Blue;
-                return '♔';
-            }
-        }
-
-       
-        internal class WinterHero : Hero  
-        {
-            public WinterHero(int x, int y) : base(x, y)
-            {
-              
-                Stats.MaxHP = 60;  
-                Stats.HP = 60;     
-                Stats.Armor = 15; 
-            }
-
-            public override char Rendering_on_the_map()
-            {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                return '⛄'; 
-            }
-                
+            Console.ForegroundColor = ConsoleColor.White;
+            return '❄';
         }
     }
 }
-
-

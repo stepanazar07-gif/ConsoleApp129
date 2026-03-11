@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp129
 {
@@ -12,27 +8,27 @@ namespace ConsoleApp129
         protected MapObject[,] map = new MapObject[25, 25];
         protected int heroX;
         protected int heroY;
-
         private char[,] backBuffer = new char[25, 25];
-        protected ConsoleColor[,] colorBuffer = new ConsoleColor[25, 25];
 
         public void Map_generation()
         {
-            for (int i = 0; i < map.GetLength(0); i++)
+          
+            for (int i = 0; i < 25; i++)
             {
-                for (int j = 0; j < map.GetLength(1); j++)
+                for (int j = 0; j < 25; j++)
                 {
                     map[i, j] = new Field();
                 }
             }
 
+           
             int treeCount = rand.Next(30, 50);
             for (int t = 0; t < treeCount; t++)
             {
-                int x = rand.Next(0, map.GetLength(0));
-                int y = rand.Next(0, map.GetLength(1));
+                int x = rand.Next(0, 25);
+                int y = rand.Next(0, 25);
 
-                if (!(x == map.GetLength(0) / 2 && y == map.GetLength(1) / 2))
+                if (x != 12 || y != 12)
                 {
                     if (map[x, y] is Field)
                     {
@@ -41,13 +37,14 @@ namespace ConsoleApp129
                 }
             }
 
+          
             int mountainCount = rand.Next(15, 25);
             for (int m = 0; m < mountainCount; m++)
             {
-                int x = rand.Next(0, map.GetLength(0));
-                int y = rand.Next(0, map.GetLength(1));
+                int x = rand.Next(0, 25);
+                int y = rand.Next(0, 25);
 
-                if (!(x == map.GetLength(0) / 2 && y == map.GetLength(1) / 2))
+                if (x != 12 || y != 12)
                 {
                     if (map[x, y] is Field)
                     {
@@ -56,93 +53,108 @@ namespace ConsoleApp129
                 }
             }
 
+          
             int enemyCount = 0;
             while (enemyCount < 8)
             {
-                int x = rand.Next(0, map.GetLength(0));
-                int y = rand.Next(0, map.GetLength(1));
+                int x = rand.Next(0, 25);
+                int y = rand.Next(0, 25);
 
-                if ((map[x, y] is Field) &&
-                    !(x == map.GetLength(0) / 2 && y == map.GetLength(1) / 2))
+                if (map[x, y] is Field && (x != 12 || y != 12))
                 {
                     map[x, y] = new Enemy(x, y);
                     enemyCount++;
                 }
             }
 
-            heroX = map.GetLength(0) / 2;
-            heroY = map.GetLength(1) / 2;
-            map[heroX, heroY] = new Hero(heroX, heroY);
+          
+            heroX = 12;
+            heroY = 12;
+            map[12, 12] = new Hero(12, 12);
 
-            for (int i = 0; i < map.GetLength(0); i++)
+         
+            PlaceDoor();
+
+          
+            for (int i = 0; i < 25; i++)
             {
-                for (int j = 0; j < map.GetLength(1); j++)
+                for (int j = 0; j < 25; j++)
                 {
                     backBuffer[i, j] = ' ';
-                    colorBuffer[i, j] = ConsoleColor.White;
                 }
             }
         }
 
-        public void Drawing_the_map()
-        {
-            for (int i = 0; i < map.GetLength(0); i++)
+            public void Drawing_the_map()
             {
-                for (int j = 0; j < map.GetLength(1); j++)
+           
+                for (int i = 0; i < 25; i++)
                 {
-                    char currentChar = map[i, j].Rendering_on_the_map();
-                    backBuffer[i, j] = currentChar;
-                }
-            }
+                    for (int j = 0; j < 25; j++)
+                    {
+                        char currentChar = map[i, j].Rendering_on_the_map();
+                        backBuffer[i, j] = currentChar;
+                    }
+                }   
 
-            Console.SetCursorPosition(0, 0);
-
-            for (int i = 0; i < map.GetLength(0); i++)
-            {
-                for (int j = 0; j < map.GetLength(1); j++)
+        
+                Console.SetCursorPosition(0, 0);
+                for (int i = 0; i < 25; i++)
                 {
-                    map[i, j].Rendering_on_the_map();
-                    Console.Write(backBuffer[i, j] + " ");
-                    Console.ResetColor();
+                    for (int j = 0; j < 25; j++)
+                    {
+                        map[i, j].Rendering_on_the_map();
+                        Console.Write(backBuffer[i, j] + " ");
+                        Console.ResetColor();
+                    }
+                    Console.WriteLine();
                 }
-                Console.WriteLine();
-            }
 
-            int enemyCount = 0;
-            int treeCount = 0;
-            int mountainCount = 0;
+          
+                int enemyCount = 0;
+                int treeCount = 0;
+                int mountainCount = 0;
 
-            for (int i = 0; i < map.GetLength(0); i++)
-            {
-                for (int j = 0; j < map.GetLength(1); j++)
+                for (int i = 0; i < 25; i++)
                 {
-                    if (map[i, j] is Enemy) enemyCount++;
-                    if (map[i, j] is Tree) treeCount++;
-                    if (map[i, j] is Mountain) mountainCount++;
+                    for (int j = 0; j < 25; j++)
+                    {
+                        if (map[i, j] is Enemy)
+                        {
+                            enemyCount++;
+                        }
+                        if (map[i, j] is Tree)
+                        {
+                            treeCount++;
+                        }
+                        if (map[i, j] is Mountain)
+                        {
+                            mountainCount++;
+                        }
+                    }
                 }
-            }
-
-            Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount}  ");
+             
+             Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount}");
+             
+           
+         
         }
 
         public void CheckCombat(Hero hero)
         {
-            for (int i = 0; i < map.GetLength(0); i++)
+            for (int i = 0; i < 25; i++)
             {
-                for (int j = 0; j < map.GetLength(1); j++)
+                for (int j = 0; j < 25; j++)
                 {
                     if (map[i, j] is Enemy enemy)
                     {
                         if (Math.Abs(i - heroX) + Math.Abs(j - heroY) == 1)
                         {
                             hero.Stats.TakeDamage(enemy.Damage);
-
-                            Console.SetCursorPosition(0, map.GetLength(0) + 2);
-                            Console.Write($"⚔ Бой! Получено {enemy.Damage} урона      ");
-
                             map[i, j] = new Field();
 
-                            // XP и мана УДАЛЕНЫ - ничего не добавляем
+                            Console.SetCursorPosition(0, 27);
+                            Console.Write("⚔ Бой! Получено " + enemy.Damage + " урона        ");
                         }
                     }
                 }
@@ -151,24 +163,34 @@ namespace ConsoleApp129
 
         public void MovePersons()
         {
-            MapObject[,] newMap = new MapObject[map.GetLength(0), map.GetLength(1)];
+            MapObject[,] newMap = new MapObject[25, 25];
             Array.Copy(map, newMap, map.Length);
 
-            for (int i = 0; i < map.GetLength(0); i++)
+            for (int i = 0; i < 25; i++)
             {
-                for (int j = 0; j < map.GetLength(1); j++)
+                for (int j = 0; j < 25; j++)
                 {
                     if (map[i, j] is Enemy)
                     {
                         int direction = rand.Next(4);
-                        int newX = i, newY = j;
+                        int newX = i;
+                        int newY = j;
 
-                        switch (direction)
+                        if (direction == 0)
                         {
-                            case 0: newX = (i - 1 + map.GetLength(0)) % map.GetLength(0); break;
-                            case 1: newX = (i + 1) % map.GetLength(0); break;
-                            case 2: newY = (j - 1 + map.GetLength(1)) % map.GetLength(1); break;
-                            case 3: newY = (j + 1) % map.GetLength(1); break;
+                            newX = (i - 1 + 25) % 25;
+                        }
+                        else if (direction == 1)
+                        {
+                            newX = (i + 1) % 25;
+                        }
+                        else if (direction == 2)
+                        {
+                            newY = (j - 1 + 25) % 25;
+                        }
+                        else if (direction == 3)
+                        {
+                            newY = (j + 1) % 25;
                         }
 
                         if (newMap[newX, newY] is Field)
@@ -185,29 +207,39 @@ namespace ConsoleApp129
 
         public void MovePersons(ConsoleKey key)
         {
-            MapObject[,] newMap = new MapObject[map.GetLength(0), map.GetLength(1)];
+            MapObject[,] newMap = new MapObject[25, 25];
             Array.Copy(map, newMap, map.Length);
 
-            for (int i = 0; i < map.GetLength(0); i++)
+            for (int i = 0; i < 25; i++)
             {
-                for (int j = 0; j < map.GetLength(1); j++)
+                for (int j = 0; j < 25; j++)
                 {
                     if (map[i, j] is Hero)
                     {
-                        int newX = i, newY = j;
-                        switch (key)
+                        int newX = i;
+                        int newY = j;
+
+                        if (key == ConsoleKey.UpArrow)
                         {
-                            case ConsoleKey.UpArrow: newX = (i - 1 + map.GetLength(0)) % map.GetLength(0); break;
-                            case ConsoleKey.DownArrow: newX = (i + 1) % map.GetLength(0); break;
-                            case ConsoleKey.LeftArrow: newY = (j - 1 + map.GetLength(1)) % map.GetLength(1); break;
-                            case ConsoleKey.RightArrow: newY = (j + 1) % map.GetLength(1); break;
+                            newX = (i - 1 + 25) % 25;
+                        }
+                        else if (key == ConsoleKey.DownArrow)
+                        {
+                            newX = (i + 1) % 25;
+                        }
+                        else if (key == ConsoleKey.LeftArrow)
+                        {
+                            newY = (j - 1 + 25) % 25;
+                        }
+                        else if (key == ConsoleKey.RightArrow)
+                        {
+                            newY = (j + 1) % 25;
                         }
 
                         if (newMap[newX, newY] is Field)
                         {
                             newMap[newX, newY] = map[i, j];
                             newMap[i, j] = new Field();
-
                             heroX = newX;
                             heroY = newY;
                         }
@@ -220,22 +252,27 @@ namespace ConsoleApp129
 
         public MapObject GetObjectAt(int x, int y)
         {
-            if (x >= 0 && x < map.GetLength(0) && y >= 0 && y < map.GetLength(1))
+            if (x >= 0 && x < 25 && y >= 0 && y < 25)
+            {
                 return map[x, y];
+            }
             return null;
         }
 
         public void PlaceObject(int x, int y, MapObject obj)
         {
-            if (x >= 0 && x < map.GetLength(0) && y >= 0 && y < map.GetLength(1))
+            if (x >= 0 && x < 25 && y >= 0 && y < 25)
+            {
                 map[x, y] = obj;
+            }
         }
 
         public void GenerateNewLevel(int level)
         {
-            for (int i = 0; i < map.GetLength(0); i++)
+        
+            for (int i = 0; i < 25; i++)
             {
-                for (int j = 0; j < map.GetLength(1); j++)
+                for (int j = 0; j < 25; j++)
                 {
                     map[i, j] = new Field();
                 }
@@ -245,48 +282,57 @@ namespace ConsoleApp129
             int treeCount = rand.Next(30, 50);
             int mountainCount = rand.Next(15, 25);
 
+           
             for (int t = 0; t < treeCount; t++)
             {
-                int x = rand.Next(0, map.GetLength(0));
-                int y = rand.Next(0, map.GetLength(1));
-                if (!(x == map.GetLength(0) / 2 && y == map.GetLength(1) / 2) && map[x, y] is Field)
+                int x = rand.Next(0, 25);
+                int y = rand.Next(0, 25);
+                if ((x != 12 || y != 12) && map[x, y] is Field)
+                {
                     map[x, y] = new Tree();
+                }
             }
 
+         
             for (int m = 0; m < mountainCount; m++)
             {
-                int x = rand.Next(0, map.GetLength(0));
-                int y = rand.Next(0, map.GetLength(1));
-                if (!(x == map.GetLength(0) / 2 && y == map.GetLength(1) / 2) && map[x, y] is Field)
+                int x = rand.Next(0, 25);
+                int y = rand.Next(0, 25);
+                if ((x != 12 || y != 12) && map[x, y] is Field)
+                {
                     map[x, y] = new Mountain();
+                }
             }
 
+           
             int enemyDamage = 3 + level;
             int enemiesPlaced = 0;
             while (enemiesPlaced < enemyCount)
             {
-                int x = rand.Next(0, map.GetLength(0));
-                int y = rand.Next(0, map.GetLength(1));
+                int x = rand.Next(0, 25);
+                int y = rand.Next(0, 25);
 
-                if (map[x, y] is Field && !(x == map.GetLength(0) / 2 && y == map.GetLength(1) / 2))
+                if (map[x, y] is Field && (x != 12 || y != 12))
                 {
-                    var enemy = new Enemy(x, y);
+                    Enemy enemy = new Enemy(x, y);
                     enemy.Damage = enemyDamage;
-                    // XPReward УДАЛЕН
                     map[x, y] = enemy;
                     enemiesPlaced++;
                 }
             }
 
-            heroX = map.GetLength(0) / 2;
-            heroY = map.GetLength(1) / 2;
-            map[heroX, heroY] = new Hero(heroX, heroY);
+         
+            heroX = 12;
+            heroY = 12;
+            map[12, 12] = new Hero(12, 12);
 
+         
             PlaceDoor();
 
-            for (int i = 0; i < map.GetLength(0); i++)
+          
+            for (int i = 0; i < 25; i++)
             {
-                for (int j = 0; j < map.GetLength(1); j++)
+                for (int j = 0; j < 25; j++)
                 {
                     backBuffer[i, j] = ' ';
                 }
@@ -295,58 +341,25 @@ namespace ConsoleApp129
 
         protected void PlaceDoor()
         {
-            int doorX = map.GetLength(0) - 3;
-            int doorY = map.GetLength(1) - 3;
+            int doorX = 22;
+            int doorY = 22;
 
             while (doorX > 0 && doorY > 0 && !(map[doorX, doorY] is Field))
             {
                 doorX--;
                 if (doorX < 0)
                 {
-                    doorX = map.GetLength(0) - 3;
+                    doorX = 22;
                     doorY--;
                 }
             }
 
             if (doorX >= 0 && doorY >= 0)
             {
-                var door = new Door();
+                Door door = new Door();
                 door.X = doorX;
                 door.Y = doorY;
                 map[doorX, doorY] = door;
-            }
-        }
-
-        public void CheckDoorEntry(Hero hero, LevelManager levelManager)
-        {
-            for (int i = 0; i < map.GetLength(0); i++)
-            {
-                for (int j = 0; j < map.GetLength(1); j++)
-                {
-                    if (map[i, j] is Door door)
-                    {
-                        if (Math.Abs(i - heroX) + Math.Abs(j - heroY) == 1)
-                        {
-                            if (door.IsOpen)
-                            {
-                                Console.SetCursorPosition(0, map.GetLength(0) + 3);
-                                Console.Write($"🚪 Вход в дверь! Переход на новый уровень...      ");
-
-                                levelManager.NextLevel(this, hero);
-
-                                heroX = 12;
-                                heroY = 12;
-
-                                return;
-                            }
-                            else
-                            {
-                                Console.SetCursorPosition(0, map.GetLength(0) + 3);
-                                Console.Write($"🔒 Дверь закрыта! Убей всех врагов...      ");
-                            }
-                        }
-                    }
-                }
             }
         }
     }

@@ -1,51 +1,56 @@
 ﻿using System;
 
-internal class Menu
+namespace ConsoleApp129
 {
-    private string[] items;
-    private int selected = 0;
-
-    public Menu(string[] menuItems)
+    internal class Menu
     {
-        items = menuItems;
-    }
+        private string[] items;
+        private int selected = 0;
 
-    public int Show()
-    {
-        ConsoleKey key;
-        do
+        public Menu(string[] menuItems)
         {
-            Console.Clear();
-            Console.WriteLine("=== ГЛАВНОЕ МЕНЮ ===\n");
+            items = menuItems;
+        }
 
-            for (int i = 0; i < items.Length; i++)
+        public int Show()
+        {
+            ConsoleKey key;
+            do
             {
-                if (i == selected)
+                Console.Clear();
+                Console.WriteLine("=== ГЛАВНОЕ МЕНЮ ===\n");
+
+                for (int i = 0; i < items.Length; i++)
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("→ " + items[i]);
+                    if (i == selected)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("→ " + items[i]);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.WriteLine("  " + items[i]);
+                    }
+                    Console.ResetColor();
                 }
-                else
+
+                Console.WriteLine("\n↑/↓ - выбор, Enter - подтвердить");
+
+                key = Console.ReadKey(true).Key;
+
+                if (key == ConsoleKey.UpArrow)
                 {
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.WriteLine("  " + items[i]);
+                    selected = (selected - 1 + items.Length) % items.Length;
                 }
-                Console.ResetColor();
-            }
+                else if (key == ConsoleKey.DownArrow)
+                {
+                    selected = (selected + 1) % items.Length;
+                }
 
-            Console.WriteLine("\n↑/↓ - выбор, Enter - подтвердить");
+            } while (key != ConsoleKey.Enter);
 
-            key = Console.ReadKey(true).Key;
-
-            if (key == ConsoleKey.UpArrow)
-                selected = (selected - 1 + items.Length) % items.Length;
-            else if (key == ConsoleKey.DownArrow)
-                selected = (selected + 1) % items.Length;
-
-        } while (key != ConsoleKey.Enter);
-
-        return selected;
-        
+            return selected;
+        }
     }
-    
 }
