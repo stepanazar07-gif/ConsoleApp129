@@ -73,5 +73,11 @@ namespace ConsoleApp129
             Console.SetCursorPosition(0, 28);
             Console.WriteLine("✨ УРОВЕНЬ " + CurrentLevel + "!          ");
         }
+        public void ResetLevel()
+        {
+            DoorOpen = false;
+            doorX = -1;
+            doorY = -1;
+        }
     }
 }
