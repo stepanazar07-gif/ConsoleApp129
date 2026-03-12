@@ -47,6 +47,7 @@
     <Compile Include="Core\GameStats.cs" />
     <Compile Include="Core\LevelManager.cs" />
     <Compile Include="Entities\NewLevel1.cs" />
+    <Compile Include="Entities\NewLevel2.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Entities\MapObject.cs" />
     <Compile Include="UI\Menu.cs" />

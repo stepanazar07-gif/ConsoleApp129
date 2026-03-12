@@ -43,7 +43,7 @@ namespace ConsoleApp129
         }
     }
 
-    
+
     internal class IceMountain : MapObject
     {
         public override char Rendering_on_the_map()
@@ -59,6 +59,14 @@ namespace ConsoleApp129
         {
             Console.ForegroundColor = ConsoleColor.White;
             return '❄';
+        }
+    }
+    internal class Cactus : MapObject
+    {
+        public override char Rendering_on_the_map()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            return '♣';
         }
     }
 }

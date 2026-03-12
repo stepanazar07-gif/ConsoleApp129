@@ -1,5 +1,6 @@
-﻿using System;
-using ConsoleApp129.Core;
+﻿using ConsoleApp129.Core;
+using System;
+using System.Threading;
 
 namespace ConsoleApp129
 {
@@ -14,7 +15,7 @@ namespace ConsoleApp129
 
         public void Map_generation()
         {
-          
+
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -23,7 +24,7 @@ namespace ConsoleApp129
                 }
             }
 
-           
+
             int treeCount = rand.Next(30, 50);
             for (int t = 0; t < treeCount; t++)
             {
@@ -39,7 +40,7 @@ namespace ConsoleApp129
                 }
             }
 
-          
+
             int mountainCount = rand.Next(15, 25);
             for (int m = 0; m < mountainCount; m++)
             {
@@ -55,7 +56,7 @@ namespace ConsoleApp129
                 }
             }
 
-          
+
             int enemyCount = 0;
             while (enemyCount < 8)
             {
@@ -69,15 +70,15 @@ namespace ConsoleApp129
                 }
             }
 
-          
+
             heroX = 12;
             heroY = 12;
             map[12, 12] = new Hero(12, 12);
 
-         
+
             PlaceDoor();
 
-          
+
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -87,56 +88,57 @@ namespace ConsoleApp129
             }
         }
 
-            public void Drawing_the_map()
+        public void Drawing_the_map()
+        {
+
+            for (int i = 0; i < 25; i++)
             {
-           
-                for (int i = 0; i < 25; i++)
+                for (int j = 0; j < 25; j++)
                 {
-                    for (int j = 0; j < 25; j++)
-                    {
-                        char currentChar = map[i, j].Rendering_on_the_map();
-                        backBuffer[i, j] = currentChar;
-                    }
-                }   
-
-        
-                Console.SetCursorPosition(0, 0);
-                for (int i = 0; i < 25; i++)
-                {
-                    for (int j = 0; j < 25; j++)
-                    {
-                        map[i, j].Rendering_on_the_map();
-                        Console.Write(backBuffer[i, j] + " ");
-                        Console.ResetColor();
-                    }
-                    Console.WriteLine();
+                    char currentChar = map[i, j].Rendering_on_the_map();
+                    backBuffer[i, j] = currentChar;
                 }
+            }
 
-          
-                int enemyCount = 0;
-                int treeCount = 0;
-                int mountainCount = 0;
 
-                for (int i = 0; i < 25; i++)
+            Console.SetCursorPosition(0, 0);
+            for (int i = 0; i < 25; i++)
+            {
+                for (int j = 0; j < 25; j++)
                 {
-                    for (int j = 0; j < 25; j++)
+                    map[i, j].Rendering_on_the_map();
+                    Console.Write(backBuffer[i, j] + " ");
+                    Console.ResetColor();
+                }
+                Console.WriteLine();
+            }
+
+
+            int enemyCount = 0;
+            int treeCount = 0;
+            int mountainCount = 0;
+            
+
+            for (int i = 0; i < 25; i++)
+            {
+                for (int j = 0; j < 25; j++)
+                {
+                    if (map[i, j] is Enemy)
                     {
-                        if (map[i, j] is Enemy)
-                        {
-                            enemyCount++;
-                        }
-                        if (map[i, j] is Tree)
-                        {
-                            treeCount++;
-                        }
-                        if (map[i, j] is Mountain)
-                        {
-                            mountainCount++;
-                        }
+                        enemyCount++;
+                    }
+                    if (map[i, j] is Tree)
+                    {
+                        treeCount++;
+                    }
+                    if (map[i, j] is Mountain)
+                    {
+                        mountainCount++;
                     }
                 }
-             
-            Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount}");
+            }
+            
+            Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount}  ");
         }
 
         public void MovePersons()
@@ -219,7 +221,7 @@ namespace ConsoleApp129
                             heroX = newX;
                             heroY = newY;
                         }
-                        if (newMap[newX, newY] is Enemy enemy)
+                        else if (newMap[newX, newY] is Enemy enemy)
                         {
                             newMap[newX, newY] = map[i, j];
                             newMap[i, j] = new Field();
@@ -229,21 +231,54 @@ namespace ConsoleApp129
 
                             Console.SetCursorPosition(0, 27);
                             Console.Write("⚔ Бой! Получено " + enemy.Damage + " урона        ");
-
                         }
-                        if (newMap[newX, newY] is Door)
+                        else if (newMap[newX, newY] is Door)
                         {
-                            NewLevel1 winterlevel = new NewLevel1();
-                            if (LevelManager == null)
+                           
+                            int enemiesAlive = 0;
+                            for (int x = 0; x < 25; x++)
                             {
-                                throw new InvalidOperationException("LevelManager не должен быть null");
+                                for (int y = 0; y < 25; y++)
+                                {
+                                    if (map[x, y] is Enemy)
+                                        enemiesAlive++;
+                                }
                             }
-                            LevelManager.CurrentLevel++;
-                            map = winterlevel.Map_generation();
-                            LevelManager.ResetLevel();
-                            Console.Clear();
-                            Drawing_the_map();
 
+                           
+                            if (enemiesAlive > 0)
+                            {
+                                Console.SetCursorPosition(0, 28);
+                                Console.WriteLine($"Нельзя войти! Осталось врагов: {enemiesAlive}");
+                                Thread.Sleep(1000);
+                                Console.SetCursorPosition(0, 28);
+                                Console.Write(new string(' ', 40));
+                            }
+                            else
+                            {
+                           
+                                if (LevelManager == null)
+                                {
+                                    throw new InvalidOperationException("LevelManager не должен быть null");
+                                }
+
+                                LevelManager.CurrentLevel++;
+
+                             
+                                NewLevel1 winterlevel = new NewLevel1();
+                                map = winterlevel.Map_generation(hero); 
+
+                               
+                                heroX = 12;
+                                heroY = 12;
+
+                                LevelManager.ResetLevel();
+                                Console.Clear();
+                                Drawing_the_map();
+
+                               
+                                return;
+                            }
                         }
                     }
                 }
@@ -271,7 +306,7 @@ namespace ConsoleApp129
 
         public void GenerateNewLevel(int level)
         {
-        
+
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -284,7 +319,7 @@ namespace ConsoleApp129
             int treeCount = rand.Next(30, 50);
             int mountainCount = rand.Next(15, 25);
 
-           
+
             for (int t = 0; t < treeCount; t++)
             {
                 int x = rand.Next(0, 25);
@@ -295,7 +330,7 @@ namespace ConsoleApp129
                 }
             }
 
-         
+
             for (int m = 0; m < mountainCount; m++)
             {
                 int x = rand.Next(0, 25);
@@ -306,7 +341,7 @@ namespace ConsoleApp129
                 }
             }
 
-           
+
             int enemyDamage = 3 + level;
             int enemiesPlaced = 0;
             while (enemiesPlaced < enemyCount)
@@ -323,15 +358,15 @@ namespace ConsoleApp129
                 }
             }
 
-         
+
             heroX = 12;
             heroY = 12;
             map[12, 12] = new Hero(12, 12);
 
-         
+
             PlaceDoor();
 
-          
+
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)

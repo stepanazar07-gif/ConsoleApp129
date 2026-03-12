@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ConsoleApp129.Core
 {
@@ -8,7 +12,7 @@ namespace ConsoleApp129.Core
         {
         }
 
-        public MapObject[,] Map_generation()
+        public MapObject[,] Map_generation(Hero existingHero)
         {
             Random rand = new Random();
 
@@ -67,7 +71,7 @@ namespace ConsoleApp129.Core
 
             heroX = 12;
             heroY = 12;
-            map[12, 12] = new WinterHero(12, 12);
+            map[12, 12] = existingHero;
 
 
             var doorPos = PlaceDoor();

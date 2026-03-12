@@ -45,7 +45,7 @@ namespace ConsoleApp129
             gameMap.GenerateNewLevel(1);
 
             bool gameRunning = true;
-            
+
             player = gameMap.FindHero();
 
             while (gameRunning)
@@ -86,7 +86,7 @@ namespace ConsoleApp129
                 }
             }
         }
-
+        
         static void ShowInfo()
         {
             Console.Clear();
