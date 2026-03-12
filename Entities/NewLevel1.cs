@@ -8,7 +8,7 @@ namespace ConsoleApp129.Core
         {
         }
 
-        public new void Map_generation()
+        public MapObject[,] Map_generation()
         {
             Random rand = new Random();
 
@@ -70,7 +70,8 @@ namespace ConsoleApp129.Core
             map[12, 12] = new WinterHero(12, 12);
 
 
-            PlaceDoor();
+            var doorPos = PlaceDoor();
+            return map;
         }
     }
 }

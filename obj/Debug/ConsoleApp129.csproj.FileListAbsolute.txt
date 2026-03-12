@@ -14,3 +14,11 @@ C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практ
 C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\obj\Debug\ConsoleApp129.csproj.CoreCompileInputs.cache
 C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\obj\Debug\ConsoleApp129.exe
 C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\obj\Debug\ConsoleApp129.pdb
+C:\Users\drplx\Desktop\projects\stepa praktika\ConsoleApp129\obj\Debug\ConsoleApp129.csproj.AssemblyReference.cache
+C:\Users\drplx\Desktop\projects\stepa praktika\ConsoleApp129\obj\Debug\ConsoleApp129.csproj.CoreCompileInputs.cache
+C:\Users\drplx\Desktop\projects\stepa praktika\ConsoleApp129\bin\Debug\ConsoleApp129.exe.config
+C:\Users\drplx\Desktop\projects\stepa praktika\ConsoleApp129\bin\Debug\ConsoleApp129.exe
+C:\Users\drplx\Desktop\projects\stepa praktika\ConsoleApp129\bin\Debug\ConsoleApp129.pdb
+C:\Users\drplx\Desktop\projects\stepa praktika\ConsoleApp129\obj\Debug\ConsoleApp129.exe
+C:\Users\drplx\Desktop\projects\stepa praktika\ConsoleApp129\obj\Debug\ConsoleApp129.pdb
+C:\Users\drplx\Desktop\projects\stepa praktika\ConsoleApp129\obj\Debug\ConsoleApp129.exe.config

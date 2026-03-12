@@ -19,15 +19,13 @@ namespace ConsoleApp129
 
             while (true)
             {
-                string[] menuItems = { "Новая игра", "Загрузить", "Информация", "Выход" };
+                string[] menuItems = { "Новая игра", "Информация", "Выход" };
                 Menu mainMenu = new Menu(menuItems);
                 int choice = mainMenu.Show();
 
                 if (choice == 0)
-                    StartGame(false);
+                    StartGame();
                 else if (choice == 1)
-                    StartGame(true);
-                else if (choice == 2)
                     ShowInfo();
                 else
                     break;
@@ -38,64 +36,28 @@ namespace ConsoleApp129
             Console.ReadKey();
         }
 
-        static void StartGame(bool loadSaved)
+        static void StartGame()
         {
             gameMap = new Map();
-            player = new Hero(12, 12);
-            levelManager = new LevelManager();
+            LevelManager levelManager = new LevelManager();
+            gameMap.LevelManager = levelManager;
 
-            if (loadSaved)
-            {
-                if (!SaveSystem.LoadGame(player))
-                {
-                    Console.WriteLine("Начинаем новую игру...");
-                    gameMap.GenerateNewLevel(1);
-                    Thread.Sleep(1500);
-                }
-                else
-                {
-                    Console.WriteLine("Игра загружена!");
-                    gameMap.GenerateNewLevel(levelManager.CurrentLevel);
-                    Thread.Sleep(1500);
-                }
-            }
-            else
-            {
-                gameMap.GenerateNewLevel(1);
-            }
+            gameMap.GenerateNewLevel(1);
 
             bool gameRunning = true;
+            
+            player = gameMap.FindHero();
 
             while (gameRunning)
             {
                 Console.SetCursorPosition(0, 0);
                 gameMap.Drawing_the_map();
-
                 Console.SetCursorPosition(0, 26);
-                player.Stats.ShowStats();
                 Console.WriteLine("Этаж: " + levelManager.CurrentLevel);
-                Console.WriteLine("F5 - сохранить | ESC - меню | Стрелки - движение");
+                player.Stats.ShowStats();
+                Console.WriteLine("ESC - меню | Стрелки - движение");
 
                 levelManager.CheckEnemies(gameMap);
-
-                if (levelManager.HeroOnDoor(player.X, player.Y))
-                {
-                    if (levelManager.CurrentLevel == 1)
-                    {
-                        NewLevel1 winterLevel = new NewLevel1();
-                        winterLevel.Map_generation();
-                        gameMap = winterLevel;
-                        levelManager.CurrentLevel = 2;
-                    }
-                    else
-                    {
-                        levelManager.NextLevel(gameMap, player);
-                    }
-
-                    player.X = 12;
-                    player.Y = 12;
-                    continue;
-                }
 
                 if (player.Stats.HP <= 0)
                 {
@@ -113,11 +75,6 @@ namespace ConsoleApp129
                 if (keyInfo.Key == ConsoleKey.Escape)
                     break;
 
-                if (keyInfo.Key == ConsoleKey.F5)
-                {
-                    SaveSystem.SaveGame(player, gameMap);
-                    continue;
-                }
 
                 if (keyInfo.Key == ConsoleKey.UpArrow ||
                     keyInfo.Key == ConsoleKey.DownArrow ||
@@ -126,7 +83,6 @@ namespace ConsoleApp129
                 {
                     gameMap.MovePersons(keyInfo.Key);
                     gameMap.MovePersons();
-                    gameMap.CheckCombat(player);
                 }
             }
         }
@@ -144,7 +100,6 @@ namespace ConsoleApp129
             Console.WriteLine("🛡 Броня - уменьшает урон");
             Console.WriteLine("\nУбей всех врагов - откроется дверь!");
             Console.WriteLine("\nУправление: стрелки, ESC - меню");
-            Console.WriteLine("Сохранение: F5");
             Console.WriteLine("\nНажми любую клавишу...");
             Console.ReadKey();
         }
