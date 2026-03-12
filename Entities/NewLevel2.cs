@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ConsoleApp129.Core
 {
     internal class NewLevel2 : Map
@@ -25,7 +26,7 @@ namespace ConsoleApp129.Core
                 }
             }
 
-            // Генерация кактусов (вместо деревьев)
+            
             int cactusCount = rand.Next(12, 18);
             for (int c = 0; c < cactusCount; c++)
             {
@@ -34,38 +35,38 @@ namespace ConsoleApp129.Core
 
                 if ((x != 12 || y != 12) && map[x, y] is Field)
                 {
-                    map[x, y] = new Cactus(); // Новый класс для кактусов
+                    map[x, y] = new Cactus(); 
                 }
             }
 
-            // Генерация скал (вместо гор)
-            int rockCount = rand.Next(20, 30);
-            for (int r = 0; r < rockCount; r++)
+           
+            int MountainCount = rand.Next(20, 30);
+            for (int r = 0; r < MountainCount; r++)
             {
                 int x = rand.Next(0, 25);
                 int y = rand.Next(0, 25);
 
                 if (x != 12 || y != 12)
                 {
-                    map[x, y] = new Rock(); // Новый класс для скал
+                    map[x, y] = new Mountain();
                 }
             }
 
-            // Генерация песчаных дюн (новый тип препятствия)
-            int duneCount = rand.Next(8, 12);
-            for (int d = 0; d < duneCount; d++)
+          
+            int DuneCount = rand.Next(8, 12);
+            for (int d = 0; d < DuneCount; d++)
             {
                 int x = rand.Next(0, 25);
                 int y = rand.Next(0, 25);
 
                 if ((x != 12 || y != 12) && map[x, y] is Field)
                 {
-                    map[x, y] = new SandDune(); // Новый класс для песчаных дюн
+                    map[x, y] = new SandDune();
                 }
             }
 
-            // Генерация врагов (пустынные враги)
-            int enemyCount = 15; // Чуть больше врагов для сложности
+            
+            int enemyCount = 15; 
             int enemiesPlaced = 0;
             while (enemiesPlaced < enemyCount)
             {
@@ -75,8 +76,8 @@ namespace ConsoleApp129.Core
                 if (map[x, y] is Field && (x != 12 || y != 12))
                 {
                     DesertEnemy enemy = new DesertEnemy(x, y);
-                    enemy.Damage = 8; // Увеличенный урон для пустынных врагов
-                    enemy.Health = 15; // Больше здоровья
+                    enemy.Damage = 8; 
+                  // можно добавить здоровье 
                     map[x, y] = enemy;
                     enemiesPlaced++;
                 }

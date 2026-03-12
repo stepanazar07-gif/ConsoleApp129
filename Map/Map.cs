@@ -117,7 +117,9 @@ namespace ConsoleApp129
             int enemyCount = 0;
             int treeCount = 0;
             int mountainCount = 0;
-            
+            int cactusCount = 0;
+            int rockCount = 0;
+            int duneCount = 0;
 
             for (int i = 0; i < 25; i++)
             {
@@ -135,10 +137,27 @@ namespace ConsoleApp129
                     {
                         mountainCount++;
                     }
+                    if (map[i, j] is Cactus)
+                    {
+                        cactusCount++;
+                    }
+                    if (map[i, j] is Rock)
+                    {
+                        rockCount++;
+                    }
+                    if (map[i, j] is SandDune)
+                    {
+                        duneCount++;
+                    }
                 }
             }
-            
-            Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount}  ");
+
+            if (LevelManager.CurrentLevel == 1)
+                Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount}  ");
+            else if (LevelManager.CurrentLevel == 2)
+                Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount}  ");
+            else if (LevelManager.CurrentLevel == 3)
+                Console.WriteLine($"Врагов: {enemyCount} | Кактусов: {cactusCount} | Скал: {rockCount} | Дюн: {duneCount}  ");
         }
 
         public void MovePersons()
@@ -234,7 +253,7 @@ namespace ConsoleApp129
                         }
                         else if (newMap[newX, newY] is Door)
                         {
-                           
+
                             int enemiesAlive = 0;
                             for (int x = 0; x < 25; x++)
                             {
@@ -245,7 +264,7 @@ namespace ConsoleApp129
                                 }
                             }
 
-                           
+
                             if (enemiesAlive > 0)
                             {
                                 Console.SetCursorPosition(0, 28);
@@ -256,7 +275,7 @@ namespace ConsoleApp129
                             }
                             else
                             {
-                           
+
                                 if (LevelManager == null)
                                 {
                                     throw new InvalidOperationException("LevelManager не должен быть null");
@@ -264,11 +283,18 @@ namespace ConsoleApp129
 
                                 LevelManager.CurrentLevel++;
 
-                             
-                                NewLevel1 winterlevel = new NewLevel1();
-                                map = winterlevel.Map_generation(hero); 
+                                // Переход на нужный уровень
+                                if (LevelManager.CurrentLevel == 2)
+                                {
+                                    NewLevel1 winterlevel = new NewLevel1();
+                                    map = winterlevel.Map_generation(hero);
+                                }
+                                else if (LevelManager.CurrentLevel == 3)
+                                {
+                                    NewLevel2 desertLevel = new NewLevel2();
+                                    map = desertLevel.Map_generation(hero);
+                                }
 
-                               
                                 heroX = 12;
                                 heroY = 12;
 
@@ -276,7 +302,7 @@ namespace ConsoleApp129
                                 Console.Clear();
                                 Drawing_the_map();
 
-                               
+
                                 return;
                             }
                         }

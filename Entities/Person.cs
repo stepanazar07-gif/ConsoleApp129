@@ -6,11 +6,13 @@ namespace ConsoleApp129
     {
         protected int pointX;
         protected int pointY;
+        public bool HasAmulet { get; set; }
 
         public Person(int X, int Y)
         {
             pointX = X;
             pointY = Y;
+            HasAmulet = false; 
         }
 
         public override char Rendering_on_the_map()
@@ -83,6 +85,19 @@ namespace ConsoleApp129
         {
             Console.ForegroundColor = ConsoleColor.Blue;
             return '☻';
+        }
+    }
+    internal class DesertEnemy : Enemy
+    {
+        public DesertEnemy(int x, int y) : base(x, y)
+        {
+           
+        }
+
+        public override char Rendering_on_the_map()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            return 'S'; 
         }
     }
 }
