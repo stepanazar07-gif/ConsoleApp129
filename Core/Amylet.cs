@@ -1,28 +1,28 @@
-﻿using ConsoleApp129;
-using System;
+﻿using System;
 
-class Amulet : MapObject
+namespace ConsoleApp129.Core
 {
-    public int X { get; set; }
-    public int Y { get; set; }
-    public bool IsPicked { get; set; }
-    public bool IsVisible { get; set; }  // ← ДОБАВИТЬ!
-
-    public Amulet(int x, int y)
+    class Amulet : MapObject
     {
-        X = x;
-        Y = y;
-        IsPicked = false;
-     
-    }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public bool IsPicked { get; set; }
 
-    public override char Rendering_on_the_map()
-    {
-        if (!IsPicked && IsVisible)  // ← Показывать только если видим и не подобран
+        public Amulet(int x, int y)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            return '*';
+            X = x;  
+            Y = y; 
+            IsPicked = false;
         }
-        return ' ';  // ← Скрыт
+
+        public override char Rendering_on_the_map()
+        {
+            if (!IsPicked)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                return '*';
+            }
+            return ' ';
+        }
     }
 }

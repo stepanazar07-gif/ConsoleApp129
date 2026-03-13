@@ -1,6 +1,5 @@
 ﻿using ConsoleApp129.Core;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace ConsoleApp129
@@ -91,6 +90,7 @@ namespace ConsoleApp129
 
         public void Drawing_the_map()
         {
+
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -99,6 +99,7 @@ namespace ConsoleApp129
                     backBuffer[i, j] = currentChar;
                 }
             }
+
 
             Console.SetCursorPosition(0, 0);
             for (int i = 0; i < 25; i++)
@@ -112,13 +113,13 @@ namespace ConsoleApp129
                 Console.WriteLine();
             }
 
+
             int enemyCount = 0;
             int treeCount = 0;
             int mountainCount = 0;
             int cactusCount = 0;
             int rockCount = 0;
             int duneCount = 0;
-            int amuletCount = 0;
 
             for (int i = 0; i < 25; i++)
             {
@@ -148,15 +149,11 @@ namespace ConsoleApp129
                     {
                         duneCount++;
                     }
-                    if (map[i, j] is Amulet && !((Amulet)map[i, j]).IsPicked)
-                    {
-                        amuletCount++;
-                    }
                 }
             }
-             Hero hero = FindHero();
+
             if (LevelManager.CurrentLevel == 1)
-                Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount} | Амулет: {(hero != null && hero.HasAmulet ? "есть" : "нет")} "); 
+                Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount}  ");
             else if (LevelManager.CurrentLevel == 2)
                 Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount}  ");
             else if (LevelManager.CurrentLevel == 3)
@@ -234,44 +231,25 @@ namespace ConsoleApp129
                         else if (key == ConsoleKey.RightArrow)
                         {
                             newY = (j + 1) % 25;
-
                         }
-                        if (newMap[newX, newY] is Amulet amulet && !amulet.IsPicked)
+
+                        if (newMap[newX, newY] is Field)
                         {
-
-                            amulet.IsPicked = true;
-                            hero.HasAmulet = true;
-
-
                             newMap[newX, newY] = map[i, j];
                             newMap[i, j] = new Field();
                             heroX = newX;
                             heroY = newY;
+                        }
+                        else if (newMap[newX, newY] is Enemy enemy)
+                        {
+                            newMap[newX, newY] = map[i, j];
+                            newMap[i, j] = new Field();
+                            heroX = newX;
+                            heroY = newY;
+                            hero.Stats.TakeDamage(enemy.Damage);
 
                             Console.SetCursorPosition(0, 27);
-                            Console.Write("🔮 Вы нашли огненный амулет! Нажмите F для использования на боссе");
-                        }
-
-                        else if (newMap[newX, newY] is Field)
-                        {
-                            newMap[newX, newY] = map[i, j];
-                            newMap[i, j] = new Field();
-                            heroX = newX;
-                            heroY = newY;
-                        }
-
-                        else if (newMap[newX, newY] is Enemy Enemy)
-                        {
-                            newMap[newX, newY] = map[i, j];
-                            newMap[i, j] = new Field();
-                            heroX = newX;
-                            heroY = newY;
-                            hero.Stats.TakeDamage(Enemy.Damage);
-
-                            Console.SetCursorPosition(0, 27);
-                            Console.Write(" Бой! Получено " + Enemy.Damage + " урона ");
-
-                            CheckAndSpawnAmulet(hero);
+                            Console.Write("⚔ Бой! Получено " + enemy.Damage + " урона        ");
                         }
                         else if (newMap[newX, newY] is Door)
                         {
@@ -305,7 +283,7 @@ namespace ConsoleApp129
 
                                 LevelManager.CurrentLevel++;
 
-
+                                // Переход на нужный уровень
                                 if (LevelManager.CurrentLevel == 2)
                                 {
                                     NewLevel1 winterlevel = new NewLevel1();
@@ -411,21 +389,10 @@ namespace ConsoleApp129
             heroY = 12;
             map[12, 12] = new Hero(12, 12);
 
-         
-            if (level == 1)
-            {
-                int ax = rand.Next(0, 25), ay = rand.Next(0, 25);
-                while (map[ax, ay] is Field == false || (ax == 12 && ay == 12))
-                {
-                    ax = rand.Next(0, 25);
-                    ay = rand.Next(0, 25);
-                }
-                Amulet amulet = new Amulet(ax, ay);
-                amulet.IsVisible = false;  
-                map[ax, ay] = amulet;
-            }
 
             PlaceDoor();
+
+
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -460,36 +427,6 @@ namespace ConsoleApp129
                 for (int j = 0; j < map.GetLength(1); j++)
                     if (map[i, j] is Hero h) return h;
             return null;
-        }
-        private void CheckAndSpawnAmulet(Hero hero)
-        {
-            if (LevelManager.CurrentLevel != 1) return;
-            if (hero.HasAmulet) return;
-
-            int enemiesAlive = 0;
-            for (int x = 0; x < 25; x++)
-            {
-                for (int y = 0; y < 25; y++)
-                {
-                    if (map[x, y] is Enemy)
-                        enemiesAlive++;
-                }
-            }
-
-            // Когда врагов нет — создаём амулет НА КАРТЕ
-            if (enemiesAlive == 0)
-            {
-                int ax = rand.Next(0, 25), ay = rand.Next(0, 25);
-                while (map[ax, ay] is Field == false || (ax == 12 && ay == 12))
-                {
-                    ax = rand.Next(0, 25);
-                    ay = rand.Next(0, 25);
-                }
-                map[ax, ay] = new Amulet(ax, ay);
-
-                Console.SetCursorPosition(0, 28);
-                Console.Write(" 🔮 АМУЛЕТ ПОЯВИЛСЯ! Найдите его на карте!        ");
-            }
         }
     }
 }
