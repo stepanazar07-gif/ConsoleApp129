@@ -36,9 +36,10 @@ namespace ConsoleApp129
             Console.WriteLine("⚔ Получено " + actualDamage + " урона (броня " + Armor + ")   ");
         }
 
-        public void ShowStats()
+        public void ShowStats(bool hasAmulet = false)
         {
-            Console.WriteLine("❤ HP: " + HP + "/" + MaxHP + " | 🛡 Броня: " + Armor + " | 🎯 Уровень: " + Level);
+            string amuletStatus = hasAmulet ? " | 🔮 АМУЛЕТ" : "";
+            Console.WriteLine("❤ HP: " + HP + "/" + MaxHP + " | 🛡 Броня: " + Armor + " | 🎯 Уровень: " + Level + amuletStatus);
         }
     }
 }

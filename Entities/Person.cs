@@ -39,6 +39,12 @@ namespace ConsoleApp129
             Console.ForegroundColor = ConsoleColor.Yellow;
             return '☻';
         }
+
+       
+        public string GetAmuletStatus()
+        {
+            return HasAmulet ? "🔮 Амулет: ЕСТЬ" : "🔮 Амулет: НЕТ";
+        }
     }
 
     internal class Enemy : Person
