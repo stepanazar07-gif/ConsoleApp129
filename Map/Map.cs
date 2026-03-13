@@ -55,8 +55,7 @@ namespace ConsoleApp129
                     }
                 }
             }
-
-
+           
             int enemyCount = 0;
             while (enemyCount < 8)
             {
@@ -332,7 +331,7 @@ namespace ConsoleApp129
 
         public void GenerateNewLevel(int level)
         {
-
+         
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -341,10 +340,10 @@ namespace ConsoleApp129
                 }
             }
 
+           
             int enemyCount = 8 + level * 2;
             int treeCount = rand.Next(30, 50);
             int mountainCount = rand.Next(15, 25);
-
 
             for (int t = 0; t < treeCount; t++)
             {
@@ -356,7 +355,6 @@ namespace ConsoleApp129
                 }
             }
 
-
             for (int m = 0; m < mountainCount; m++)
             {
                 int x = rand.Next(0, 25);
@@ -367,14 +365,12 @@ namespace ConsoleApp129
                 }
             }
 
-
             int enemyDamage = 3 + level;
             int enemiesPlaced = 0;
             while (enemiesPlaced < enemyCount)
             {
                 int x = rand.Next(0, 25);
                 int y = rand.Next(0, 25);
-
                 if (map[x, y] is Field && (x != 12 || y != 12))
                 {
                     Enemy enemy = new Enemy(x, y);
@@ -384,15 +380,13 @@ namespace ConsoleApp129
                 }
             }
 
-
+          
             heroX = 12;
             heroY = 12;
             map[12, 12] = new Hero(12, 12);
-
-
             PlaceDoor();
 
-
+           
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -400,6 +394,8 @@ namespace ConsoleApp129
                     backBuffer[i, j] = ' ';
                 }
             }
+
+           
         }
 
         protected (int X, int Y) PlaceDoor()
@@ -428,5 +424,40 @@ namespace ConsoleApp129
                     if (map[i, j] is Hero h) return h;
             return null;
         }
+        private void CheckAndSpawnAmulet(Hero hero)
+        {
+            if (hero.HasAmulet) return;  
+
+         
+            int enemiesAlive = 0;
+            for (int x = 0; x < 25; x++)
+            {
+                for (int y = 0; y < 25; y++)
+                {
+                    if (map[x, y] is Enemy)
+                        enemiesAlive++;
+                }
+            }
+
+            
+            if (enemiesAlive == 0)
+            {
+                int ax, ay;
+                do
+                {
+                    ax = rand.Next(0, 25);
+                    ay = rand.Next(0, 25);
+                } while (map[ax, ay] is Field == false || (ax == 12 && ay == 12));
+
+                Amulet amulet = new Amulet(ax, ay);
+                amulet.IsVisible = true;  
+                map[ax, ay] = amulet;    
+
+                Console.SetCursorPosition(0, 28);
+                Console.Write("🔮 АМУЛЕТ ПОЯВИЛСЯ! Ищите звезду *        ");
+            }
+        }
+      
+
     }
 }

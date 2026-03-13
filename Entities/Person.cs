@@ -100,4 +100,17 @@ namespace ConsoleApp129
             return 'S'; 
         }
     }
-}
+    internal class Boss : Enemy
+    {
+        public Boss(int x, int y) : base(x, y)
+        {
+            Damage = 100;
+        }
+
+        public override char Rendering_on_the_map()
+        {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            return '☠'; 
+        }
+    }
+}             
