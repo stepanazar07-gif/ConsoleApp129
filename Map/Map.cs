@@ -203,6 +203,17 @@ namespace ConsoleApp129
 
         public void MovePersons(ConsoleKey key)
         {
+            
+            Hero hero = FindHero();
+            if (hero != null && hero.FreezeTurns > 0)
+            {
+                hero.FreezeTurns--;
+                Console.SetCursorPosition(0, 27);
+                Console.Write($"❄️ Заморозка: осталось ходов {hero.FreezeTurns}   ");
+                Thread.Sleep(300);
+                return;  
+            }
+
             MapObject[,] newMap = new MapObject[25, 25];
             Array.Copy(map, newMap, map.Length);
 
@@ -210,7 +221,7 @@ namespace ConsoleApp129
             {
                 for (int j = 0; j < 25; j++)
                 {
-                    if (map[i, j] is Hero hero)
+                    if (map[i, j] is Hero currenthHero)
                     {
                         int newX = i;
                         int newY = j;
@@ -245,14 +256,26 @@ namespace ConsoleApp129
                             newMap[i, j] = new Field();
                             heroX = newX;
                             heroY = newY;
-                            hero.Stats.TakeDamage(enemy.Damage);
 
+                           
+                            if (enemy is WinterEnemy winterEnemy)
+                            {
+                                int chance = rand.Next(100);
+                                if (chance < winterEnemy.FreezeChance)  
+                                {
+                                    hero.FreezeTurns = 2;  
+                                    Console.SetCursorPosition(0, 27);
+                                    Console.Write("❄️ ВАС ЗАМОРОЗИЛИ! 2 хода пропуска   ");
+                                    Thread.Sleep(500);
+                                }
+                            }
+
+                            hero.Stats.TakeDamage(enemy.Damage);
                             Console.SetCursorPosition(0, 27);
                             Console.Write("⚔ Бой! Получено " + enemy.Damage + " урона        ");
                         }
                         else if (newMap[newX, newY] is Door)
                         {
-
                             int enemiesAlive = 0;
                             for (int x = 0; x < 25; x++)
                             {
@@ -262,7 +285,6 @@ namespace ConsoleApp129
                                         enemiesAlive++;
                                 }
                             }
-
 
                             if (enemiesAlive > 0)
                             {
@@ -274,7 +296,6 @@ namespace ConsoleApp129
                             }
                             else
                             {
-
                                 if (LevelManager == null)
                                 {
                                     throw new InvalidOperationException("LevelManager не должен быть null");
@@ -282,7 +303,6 @@ namespace ConsoleApp129
 
                                 LevelManager.CurrentLevel++;
 
-                                // Переход на нужный уровень
                                 if (LevelManager.CurrentLevel == 2)
                                 {
                                     NewLevel1 winterlevel = new NewLevel1();
@@ -296,12 +316,9 @@ namespace ConsoleApp129
 
                                 heroX = 12;
                                 heroY = 12;
-
                                 LevelManager.ResetLevel();
                                 Console.Clear();
                                 Drawing_the_map();
-
-
                                 return;
                             }
                         }
@@ -311,7 +328,6 @@ namespace ConsoleApp129
 
             Array.Copy(newMap, map, map.Length);
         }
-
         public MapObject GetObjectAt(int x, int y)
         {
             if (x >= 0 && x < 25 && y >= 0 && y < 25)

@@ -26,16 +26,25 @@ namespace ConsoleApp129
         public GameStats Stats { get; private set; }
         public int X { get; set; }
         public int Y { get; set; }
+        public int FreezeTurns { get; set; }  
 
         public Hero(int X, int Y) : base(X, Y)
         {
             this.X = X;
             this.Y = Y;
             Stats = new GameStats();
+            FreezeTurns = 0;
+
         }
 
         public override char Rendering_on_the_map()
         {
+            if (FreezeTurns > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                return '■';
+
+            }
             Console.ForegroundColor = ConsoleColor.Yellow;
             return '☻';
         }
@@ -76,9 +85,13 @@ namespace ConsoleApp129
 
     internal class WinterEnemy : Enemy
     {
+        public int FreezeChance { get; set; }
         public WinterEnemy(int x, int y) : base(x, y)
         {
             Damage = 5;
+            FreezeChance = 50;
+
+
         }
 
         public override char Rendering_on_the_map()
