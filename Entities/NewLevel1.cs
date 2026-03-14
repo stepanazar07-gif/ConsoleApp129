@@ -52,7 +52,7 @@ namespace ConsoleApp129.Core
             }
 
 
-            int enemyCount = 12;
+            int enemyCount = 1;
             int enemiesPlaced = 0;
             while (enemiesPlaced < enemyCount)
             {

@@ -213,6 +213,14 @@ namespace ConsoleApp129
                 Thread.Sleep(300);
                 return;  
             }
+            if (hero != null && hero.SandTurns > 0)
+            {
+                hero.SandTurns--;
+                Console.SetCursorPosition(0, 27);
+                Console.Write($"🏜️ Песок в глазах: осталось ходов {hero.SandTurns}   ");
+                Thread.Sleep(300);
+                return;  
+            }
 
             MapObject[,] newMap = new MapObject[25, 25];
             Array.Copy(map, newMap, map.Length);
@@ -266,6 +274,17 @@ namespace ConsoleApp129
                                     hero.FreezeTurns = 2;  
                                     Console.SetCursorPosition(0, 27);
                                     Console.Write("❄️ ВАС ЗАМОРОЗИЛИ! 2 хода пропуска   ");
+                                    Thread.Sleep(500);
+                                }
+                            }
+                            if (enemy is DesertEnemy desertEnemy)
+                            {
+                                int chance = rand.Next(100);
+                                if (chance < desertEnemy.SandChance) 
+                                {
+                                    hero.SandTurns = 2;  
+                                    Console.SetCursorPosition(0, 27);
+                                    Console.Write("🏜️ ЗМЕЯ БРОСИЛА ПЕСОК! 2 хода пропуска   ");
                                     Thread.Sleep(500);
                                 }
                             }
