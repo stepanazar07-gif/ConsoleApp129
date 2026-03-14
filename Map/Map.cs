@@ -203,7 +203,7 @@ namespace ConsoleApp129
 
         public void MovePersons(ConsoleKey key)
         {
-            
+
             Hero hero = FindHero();
             if (hero != null && hero.FreezeTurns > 0)
             {
@@ -211,7 +211,7 @@ namespace ConsoleApp129
                 Console.SetCursorPosition(0, 27);
                 Console.Write($"❄️ Заморозка: осталось ходов {hero.FreezeTurns}   ");
                 Thread.Sleep(300);
-                return;  
+                return;
             }
             if (hero != null && hero.SandTurns > 0)
             {
@@ -219,133 +219,154 @@ namespace ConsoleApp129
                 Console.SetCursorPosition(0, 27);
                 Console.Write($"🏜️ Песок в глазах: осталось ходов {hero.SandTurns}   ");
                 Thread.Sleep(300);
-                return;  
+                return;
             }
-
-            MapObject[,] newMap = new MapObject[25, 25];
-            Array.Copy(map, newMap, map.Length);
-
-            for (int i = 0; i < 25; i++)
+            if (hero != null && hero.PoisonTurns > 0)
             {
-                for (int j = 0; j < 25; j++)
+                hero.PoisonTurns--;
+                hero.PoisonCounter++;
+
+
+                if (hero.PoisonCounter >= 3)
                 {
-                    if (map[i, j] is Hero currenthHero)
+                    hero.Stats.HP -= 1;
+                    hero.PoisonCounter = 0;
+
+                    Console.SetCursorPosition(0, 27);
+                    Console.Write($"🐍 ЯД! -1 HP (осталось {hero.PoisonTurns} ходов)   ");
+                }
+                else
+                {
+                    Console.SetCursorPosition(0, 27);
+                    Console.Write($"🐍 Отравлен: ход {hero.PoisonCounter}/3   ");
+                }
+
+                MapObject[,] newMap = new MapObject[25, 25];
+                Array.Copy(map, newMap, map.Length);
+
+                for (int i = 0; i < 25; i++)
+                {
+                    for (int j = 0; j < 25; j++)
                     {
-                        int newX = i;
-                        int newY = j;
+                        if (map[i, j] is Hero currenthHero)
+                        {
+                            int newX = i;
+                            int newY = j;
 
-                        if (key == ConsoleKey.UpArrow)
-                        {
-                            newX = (i - 1 + 25) % 25;
-                        }
-                        else if (key == ConsoleKey.DownArrow)
-                        {
-                            newX = (i + 1) % 25;
-                        }
-                        else if (key == ConsoleKey.LeftArrow)
-                        {
-                            newY = (j - 1 + 25) % 25;
-                        }
-                        else if (key == ConsoleKey.RightArrow)
-                        {
-                            newY = (j + 1) % 25;
-                        }
-
-                        if (newMap[newX, newY] is Field)
-                        {
-                            newMap[newX, newY] = map[i, j];
-                            newMap[i, j] = new Field();
-                            heroX = newX;
-                            heroY = newY;
-                        }
-                        else if (newMap[newX, newY] is Enemy enemy)
-                        {
-                            newMap[newX, newY] = map[i, j];
-                            newMap[i, j] = new Field();
-                            heroX = newX;
-                            heroY = newY;
-
-                           
-                            if (enemy is WinterEnemy winterEnemy)
+                            if (key == ConsoleKey.UpArrow)
                             {
-                                int chance = rand.Next(100);
-                                if (chance < winterEnemy.FreezeChance)  
-                                {
-                                    hero.FreezeTurns = 2;  
-                                    Console.SetCursorPosition(0, 27);
-                                    Console.Write("❄️ ВАС ЗАМОРОЗИЛИ! 2 хода пропуска   ");
-                                    Thread.Sleep(500);
-                                }
+                                newX = (i - 1 + 25) % 25;
                             }
-                            if (enemy is DesertEnemy desertEnemy)
+                            else if (key == ConsoleKey.DownArrow)
                             {
-                                int chance = rand.Next(100);
-                                if (chance < desertEnemy.SandChance) 
-                                {
-                                    hero.SandTurns = 2;  
-                                    Console.SetCursorPosition(0, 27);
-                                    Console.Write("🏜️ ЗМЕЯ БРОСИЛА ПЕСОК! 2 хода пропуска   ");
-                                    Thread.Sleep(500);
-                                }
+                                newX = (i + 1) % 25;
+                            }
+                            else if (key == ConsoleKey.LeftArrow)
+                            {
+                                newY = (j - 1 + 25) % 25;
+                            }
+                            else if (key == ConsoleKey.RightArrow)
+                            {
+                                newY = (j + 1) % 25;
                             }
 
-                            hero.Stats.TakeDamage(enemy.Damage);
-                            Console.SetCursorPosition(0, 27);
-                            Console.Write("⚔ Бой! Получено " + enemy.Damage + " урона        ");
-                        }
-                        else if (newMap[newX, newY] is Door)
-                        {
-                            int enemiesAlive = 0;
-                            for (int x = 0; x < 25; x++)
+                            if (newMap[newX, newY] is Field)
                             {
-                                for (int y = 0; y < 25; y++)
-                                {
-                                    if (map[x, y] is Enemy)
-                                        enemiesAlive++;
-                                }
+                                newMap[newX, newY] = map[i, j];
+                                newMap[i, j] = new Field();
+                                heroX = newX;
+                                heroY = newY;
                             }
-
-                            if (enemiesAlive > 0)
+                            else if (newMap[newX, newY] is Enemy enemy)
                             {
-                                Console.SetCursorPosition(0, 28);
-                                Console.WriteLine($"Нельзя войти! Осталось врагов: {enemiesAlive}");
-                                Thread.Sleep(1000);
-                                Console.SetCursorPosition(0, 28);
-                                Console.Write(new string(' ', 40));
+                                newMap[newX, newY] = map[i, j];
+                                newMap[i, j] = new Field();
+                                heroX = newX;
+                                heroY = newY;
+
+
+                                if (enemy is WinterEnemy winterEnemy)
+                                {
+                                    int chance = rand.Next(100);
+                                    if (chance < winterEnemy.FreezeChance)
+                                    {
+                                        hero.FreezeTurns = 2;
+                                        Console.SetCursorPosition(0, 27);
+                                        Console.Write("❄️ ВАС ЗАМОРОЗИЛИ! 2 хода пропуска   ");
+                                        Thread.Sleep(500);
+                                    }
+                                }
+                                if (enemy is DesertEnemy desertEnemy)
+                                {
+                                    int chance = rand.Next(100);
+                                    if (chance < desertEnemy.SandChance)
+                                    {
+                                        hero.SandTurns = 2;
+                                        Console.SetCursorPosition(0, 27);
+                                        Console.Write("🏜️ ЗМЕЯ БРОСИЛА ПЕСОК! 2 хода пропуска   ");
+                                        Thread.Sleep(500);
+                                    }
+                                }
+
+                              
+                                hero.Stats.TakeDamage(enemy.Damage);
+                                Console.SetCursorPosition(0, 27);
+                                Console.Write("⚔ Бой! Получено " + enemy.Damage + " урона        ");
                             }
-                            else
+                            else if (newMap[newX, newY] is Door)
                             {
-                                if (LevelManager == null)
+                                int enemiesAlive = 0;
+                                for (int x = 0; x < 25; x++)
                                 {
-                                    throw new InvalidOperationException("LevelManager не должен быть null");
+                                    for (int y = 0; y < 25; y++)
+                                    {
+                                        if (map[x, y] is Enemy)
+                                            enemiesAlive++;
+                                    }
                                 }
 
-                                LevelManager.CurrentLevel++;
-
-                                if (LevelManager.CurrentLevel == 2)
+                                if (enemiesAlive > 0)
                                 {
-                                    NewLevel1 winterlevel = new NewLevel1();
-                                    map = winterlevel.Map_generation(hero);
+                                    Console.SetCursorPosition(0, 28);
+                                    Console.WriteLine($"Нельзя войти! Осталось врагов: {enemiesAlive}");
+                                    Thread.Sleep(1000);
+                                    Console.SetCursorPosition(0, 28);
+                                    Console.Write(new string(' ', 40));
                                 }
-                                else if (LevelManager.CurrentLevel == 3)
+                                else
                                 {
-                                    NewLevel2 desertLevel = new NewLevel2();
-                                    map = desertLevel.Map_generation(hero);
-                                }
+                                    if (LevelManager == null)
+                                    {
+                                        throw new InvalidOperationException("LevelManager не должен быть null");
+                                    }
 
-                                heroX = 12;
-                                heroY = 12;
-                                LevelManager.ResetLevel();
-                                Console.Clear();
-                                Drawing_the_map();
-                                return;
+                                    LevelManager.CurrentLevel++;
+
+                                    if (LevelManager.CurrentLevel == 2)
+                                    {
+                                        NewLevel1 winterlevel = new NewLevel1();
+                                        map = winterlevel.Map_generation(hero);
+                                    }
+                                    else if (LevelManager.CurrentLevel == 3)
+                                    {
+                                        NewLevel2 desertLevel = new NewLevel2();
+                                        map = desertLevel.Map_generation(hero);
+                                    }
+
+                                    heroX = 12;
+                                    heroY = 12;
+                                    LevelManager.ResetLevel();
+                                    Console.Clear();
+                                    Drawing_the_map();
+                                    return;
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            Array.Copy(newMap, map, map.Length);
+                Array.Copy(newMap, map, map.Length);
+            }
         }
         public MapObject GetObjectAt(int x, int y)
         {

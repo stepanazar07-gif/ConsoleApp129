@@ -28,6 +28,12 @@ namespace ConsoleApp129
         public int Y { get; set; }
         public int FreezeTurns { get; set; }
         public int SandTurns { get; set; }
+        public int PoisonTurns { get; set; }
+        public int PoisonCounter { get; set; }
+
+
+
+
 
         public Hero(int X, int Y) : base(X, Y)
         {
@@ -36,11 +42,20 @@ namespace ConsoleApp129
             Stats = new GameStats();
             FreezeTurns = 0;
             SandTurns = 0;
+            PoisonTurns = 0;
+            PoisonCounter = 0;
 
         }
 
         public override char Rendering_on_the_map()
-        {
+        { 
+            if (PoisonTurns > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                return '☣';
+            }
+
+
             if (SandTurns > 0)
             {
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -110,12 +125,14 @@ namespace ConsoleApp129
     }
     internal class DesertEnemy : Enemy
     {
-        public int SandChance { get; set; }  
+        public int SandChance { get; set; }
+        public int PoisonChance { get; set; }
 
         public DesertEnemy(int x, int y) : base(x, y)
         {
             Damage = 8;
-            SandChance = 50;  
+            SandChance = 50;
+            PoisonChance = 70;
         }
 
         public override char Rendering_on_the_map()
