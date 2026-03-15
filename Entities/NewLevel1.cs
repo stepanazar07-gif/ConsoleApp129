@@ -50,6 +50,19 @@ namespace ConsoleApp129.Core
                     map[x, y] = new SnowTree();
                 }
             }
+            int HealsCount = rand.Next(9, 13);
+            for (int i = 0; i < HealsCount; i++)
+            {
+                int x = rand.Next(0, 25);
+                int y = rand.Next(0, 25);
+                if (x != 12 || y != 12)
+                {
+                    if (map[x, y] is Field)
+                    {
+                        map[x, y] = new Heal();
+                    }
+                }
+            }
 
 
             int enemyCount = 1;

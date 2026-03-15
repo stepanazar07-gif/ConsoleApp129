@@ -86,5 +86,13 @@ namespace ConsoleApp129
             return '▲';
         }
     }
+    internal class Heal : MapObject
+    {
+        public override char Rendering_on_the_map()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            return '♥';
+        }
+    }
 }
 
