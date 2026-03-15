@@ -296,19 +296,31 @@ namespace ConsoleApp129
                                         Thread.Sleep(500);
                                     }
                                 }
-                                if (enemy is DesertEnemy desertEnemy)
+                                if (enemy is DesertEnemy desertEnemy)  // ← desertEnemy ОДИН РАЗ!
                                 {
-                                    int chance = rand.Next(100);
-                                    if (chance < desertEnemy.SandChance)
+                                    // 🏜️ Песок
+                                    int chanceSand = rand.Next(100);
+                                    if (chanceSand < desertEnemy.SandChance)
                                     {
                                         hero.SandTurns = 2;
                                         Console.SetCursorPosition(0, 27);
                                         Console.Write("🏜️ ЗМЕЯ БРОСИЛА ПЕСОК! 2 хода пропуска   ");
                                         Thread.Sleep(500);
                                     }
+
+                                    // 🐍 Яд (ВНУТРИ того же блока!)
+                                    int chancePoison = rand.Next(100);
+                                    if (chancePoison < desertEnemy.PoisonChance)
+                                    {
+                                        hero.PoisonTurns = 6;
+                                        hero.PoisonCounter = 0;
+                                        Console.SetCursorPosition(0, 27);
+                                        Console.Write("🐍 ВАС ОТРАВИЛИ! -1 HP каждые 3 хода   ");
+                                        Thread.Sleep(500);
+                                    }
                                 }
 
-                              
+
                                 hero.Stats.TakeDamage(enemy.Damage);
                                 Console.SetCursorPosition(0, 27);
                                 Console.Write("⚔ Бой! Получено " + enemy.Damage + " урона        ");
@@ -324,6 +336,7 @@ namespace ConsoleApp129
                                             enemiesAlive++;
                                     }
                                 }
+
 
                                 if (enemiesAlive > 0)
                                 {
