@@ -38,7 +38,7 @@ namespace ConsoleApp129
 
         public void ShowStats()
         {
-            Console.WriteLine("❤ HP: " + HP + "/" + MaxHP + " | 🛡 Броня: " + Armor + " | 🎯 Уровень: " + Level);
+            Console.WriteLine("❤ HP: " + HP + "/" + MaxHP + " | 🛡 Броня: " + Armor + "");
         }
     }
 }

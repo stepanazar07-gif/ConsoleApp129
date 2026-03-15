@@ -20,7 +20,9 @@ namespace ConsoleApp129
                 }
 
                 Console.SetCursorPosition(0, 30);
-                Console.WriteLine("Игра сохранена!          ");
+                Console.Write(new string(' ', 50));  
+                Console.SetCursorPosition(0, 30);
+                Console.WriteLine("💾 Игра сохранена!          ");
             }
             catch (Exception ex)
             {

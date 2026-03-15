@@ -80,6 +80,7 @@ namespace ConsoleApp129
     }
     internal class Rock : MapObject
     {
+
         public override char Rendering_on_the_map()
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;

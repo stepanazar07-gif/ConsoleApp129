@@ -31,6 +31,10 @@ namespace ConsoleApp129
         public int SandTurns { get; set; }
         public int PoisonTurns { get; set; }
         public int PoisonCounter { get; set; }
+        public bool HasAmulet { get; set; }
+        public bool HasCrown { get; set; }
+        public bool HasScepter { get; set; }
+        public int ArtifactBonus { get; set; } = 0;
 
         public Hero(int X, int Y) : base(X, Y)
         {
@@ -41,6 +45,9 @@ namespace ConsoleApp129
             SandTurns = 0;
             PoisonTurns = 0;
             PoisonCounter = 0;
+            HasAmulet = false;
+            HasCrown = false;
+            HasScepter = false;
         }
 
         public override char Rendering_on_the_map()
@@ -83,21 +90,7 @@ namespace ConsoleApp129
         }
     }
 
-    internal class WinterHero : Hero
-    {
-        public WinterHero(int x, int y) : base(x, y)
-        {
-            Stats.MaxHP = 60;
-            Stats.HP = 60;
-            Stats.Armor = 15;
-        }
 
-        public override char Rendering_on_the_map()
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            return '⛄';
-        }
-    }
 
     internal class WinterEnemy : Enemy
     {
@@ -110,8 +103,8 @@ namespace ConsoleApp129
 
         public override char Rendering_on_the_map()
         {
-            Console.ForegroundColor = ConsoleColor.Blue;
-            return '☻';
+            Console.ForegroundColor = ConsoleColor.White;
+            return '⛇';
         }
     }
 
@@ -134,14 +127,14 @@ namespace ConsoleApp129
         }
     }
 
-    // Простая версия босса: весь бой — в одном методе SimpleFight.
+
     internal class Boss : Enemy
     {
         private int HP;
         public Boss(int x, int y) : base(x, y)
         {
-            HP = 60;      // здоровье босса (правьте при желании)
-            Damage = 12;  // урон босса
+            HP = 60;
+            Damage = 12;
         }
 
         public override char Rendering_on_the_map()
@@ -149,8 +142,37 @@ namespace ConsoleApp129
             Console.ForegroundColor = ConsoleColor.Magenta;
             return '☠';
         }
+
         public bool SimpleFight(Hero hero, Map map)
         {
+           
+            int bonus = 0;
+            string name = "";
+
+            Console.Clear();
+            Console.SetCursorPosition(0, 5);
+            Console.WriteLine("═══ ВЫБОР АРТЕФАКТА ═══\n");
+
+            if (hero.HasAmulet) Console.WriteLine("1. 🟡 Амулет (+5 урона)");
+            if (hero.HasCrown) Console.WriteLine("2. 🟣 Корона (+8 урона)");
+            if (hero.HasScepter) Console.WriteLine("3. 🔵 Скипетр (+12 урона)");
+
+            Console.Write("\nВыберите (1-3): ");
+            var key = Console.ReadKey(true).Key;
+
+            if (key == ConsoleKey.D1 && hero.HasAmulet) { bonus = 5; name = "Амулет"; }
+            else if (key == ConsoleKey.D2 && hero.HasCrown) { bonus = 8; name = "Корона"; }
+            else if (key == ConsoleKey.D3 && hero.HasScepter) { bonus = 12; name = "Скипетр"; }
+
+            hero.ArtifactBonus = bonus;
+
+            Console.Clear();
+            Console.SetCursorPosition(0, 10);
+            Console.WriteLine($"⚔ Вы выбрали: {name}! Бонус: +{bonus}");
+            Thread.Sleep(1500);
+            Console.Clear();
+         
+
             Console.SetCursorPosition(0, 27);
             Console.Write("⚔ НАЧАЛСЯ БОЙ С БОССОМ!                                   ");
             Thread.Sleep(400);
@@ -159,7 +181,8 @@ namespace ConsoleApp129
 
             while (HP > 0 && hero.Stats.HP > 0)
             {
-                int heroDmg = 6 + rnd.Next(0, 5);
+               
+                int heroDmg = 6 + rnd.Next(0, 5) + hero.ArtifactBonus;
                 HP -= heroDmg;
                 Console.SetCursorPosition(0, 27);
                 Console.Write($"⚔ Герой наносит {heroDmg} урона (Босс {Math.Max(0, HP)})    ");
@@ -176,22 +199,18 @@ namespace ConsoleApp129
 
             if (HP <= 0)
             {
-                for (int i = 0; i < 25; i++)
-                {
-                    for (int j = 0; j < 25; j++)
-                    {
-                        if (map.GetObjectAt(i, j) == this)
-                        {
-                            Amulet amulet = new Amulet(i, j) { IsVisible = true };
-                            map.PlaceObject(i, j, amulet);
-                            break;
-                        }
-                    }
-                }
-
-                Console.SetCursorPosition(0, 27);
-                Console.Write("🏆 Босс повержен! Появился амулет.                         ");
-                Thread.Sleep(700);
+                Console.Clear();
+                Console.SetCursorPosition(0, 10);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("  ╔══════════════════════════════════════╗");
+                Console.WriteLine("  ║      🎉  ВЫ ПРОШЛИ ИГРУ!  🎉          ║");
+                Console.WriteLine("  ║      Вы победили финального босса!   ║");
+                Console.WriteLine("  ╚══════════════════════════════════════╝");
+                Console.ResetColor();
+                Console.SetCursorPosition(0, 20);
+                Console.WriteLine("  Нажмите любую клавишу для выхода...");
+                Console.ReadKey();
+                Environment.Exit(0);
                 return true;
             }
             else
@@ -201,26 +220,6 @@ namespace ConsoleApp129
                 Thread.Sleep(800);
                 return false;
             }
-        }
-    }
-
-    internal class Amulet : MapObject
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public bool IsVisible { get; set; }
-
-        public Amulet(int x, int y)
-        {
-            X = x;
-            Y = y;
-            IsVisible = false;
-        }
-
-        public override char Rendering_on_the_map()
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            return '*';
         }
     }
 }

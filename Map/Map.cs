@@ -15,7 +15,6 @@ namespace ConsoleApp129
 
         public void Map_generation()
         {
-
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -23,7 +22,6 @@ namespace ConsoleApp129
                     map[i, j] = new Field();
                 }
             }
-
 
             int treeCount = rand.Next(30, 50);
             for (int t = 0; t < treeCount; t++)
@@ -40,7 +38,6 @@ namespace ConsoleApp129
                 }
             }
 
-
             int mountainCount = rand.Next(15, 25);
             for (int m = 0; m < mountainCount; m++)
             {
@@ -55,7 +52,7 @@ namespace ConsoleApp129
                     }
                 }
             }
-           
+
             int enemyCount = 0;
             while (enemyCount < 8)
             {
@@ -68,29 +65,26 @@ namespace ConsoleApp129
                     enemyCount++;
                 }
             }
-            
+
             int HealsCount = rand.Next(9, 13);
-            for(int i = 0; i < HealsCount; i++)
+            for (int i = 0; i < HealsCount; i++)
             {
                 int x = rand.Next(0, 25);
                 int y = rand.Next(0, 25);
                 if (x != 12 || y != 12)
                 {
-                    if (map[x,y] is Field)
+                    if (map[x, y] is Field)
                     {
                         map[x, y] = new Heal();
                     }
                 }
             }
 
-
             heroX = 12;
             heroY = 12;
             map[12, 12] = new Hero(12, 12);
 
-
             PlaceDoor();
-
 
             for (int i = 0; i < 25; i++)
             {
@@ -103,7 +97,6 @@ namespace ConsoleApp129
 
         public void Drawing_the_map()
         {
-
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -112,7 +105,6 @@ namespace ConsoleApp129
                     backBuffer[i, j] = currentChar;
                 }
             }
-
 
             Console.SetCursorPosition(0, 0);
             for (int i = 0; i < 25; i++)
@@ -125,7 +117,6 @@ namespace ConsoleApp129
                 }
                 Console.WriteLine();
             }
-
 
             int enemyCount = 0;
             int treeCount = 0;
@@ -142,11 +133,11 @@ namespace ConsoleApp129
                     {
                         enemyCount++;
                     }
-                    if (map[i, j] is Tree)
+                    if (map[i, j] is Tree || map[i, j] is SnowTree)
                     {
                         treeCount++;
                     }
-                    if (map[i, j] is Mountain)
+                    if (map[i, j] is Mountain || map[i, j] is IceMountain)
                     {
                         mountainCount++;
                     }
@@ -168,9 +159,11 @@ namespace ConsoleApp129
             if (LevelManager.CurrentLevel == 1)
                 Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount}  ");
             else if (LevelManager.CurrentLevel == 2)
-                Console.WriteLine($"Врагов: {enemyCount} | Деревьев: {treeCount} | Гор: {mountainCount}  ");
+                Console.WriteLine($"Врагов: {enemyCount} | ❄️ Снежных деревьев: {treeCount} | ❄️ Ледяных гор: {mountainCount}  ");
             else if (LevelManager.CurrentLevel == 3)
-                Console.WriteLine($"Врагов: {enemyCount} | Кактусов: {cactusCount} | Скал: {rockCount} | Дюн: {duneCount}  ");
+                Console.WriteLine($"Врагов: {enemyCount} | Кактусов: {cactusCount} | Скал: {mountainCount} | Дюн: {duneCount}  ");
+            else if (LevelManager.CurrentLevel == 4)
+                Console.WriteLine($"🏆 ФИНАЛЬНЫЙ УРОВЕНЬ | Босс Красава вообще | Стен: много  ");
         }
 
         public void MovePersons()
@@ -253,14 +246,12 @@ namespace ConsoleApp129
                 }
             }
 
-            int rows = map.GetLength(0); // 25
-            int cols = map.GetLength(1); // 25
+            int rows = map.GetLength(0);
+            int cols = map.GetLength(1);
 
-            // newMap — копия для безопасного перемещения
             MapObject[,] newMap = new MapObject[rows, cols];
             Array.Copy(map, newMap, map.Length);
 
-            // Приводим индексы к явной семантике: первый индекс = row (y), второй = col (x)
             for (int row = 0; row < rows; row++)
             {
                 for (int col = 0; col < cols; col++)
@@ -286,7 +277,6 @@ namespace ConsoleApp129
                                 break;
                         }
 
-                        // если ход на поле
                         if (newMap[newRow, newCol] is Field)
                         {
                             newMap[newRow, newCol] = map[row, col];
@@ -294,7 +284,6 @@ namespace ConsoleApp129
                             heroX = newCol;
                             heroY = newRow;
                         }
-                        // если хил
                         else if (newMap[newRow, newCol] is Heal)
                         {
                             hero.FreezeTurns = 0;
@@ -307,6 +296,41 @@ namespace ConsoleApp129
                             heroX = newCol;
                             heroY = newRow;
                         }
+                   
+                        else if (newMap[newRow, newCol] is Amulet amulet)
+                        {
+                            hero.HasAmulet = true;
+                            newMap[newRow, newCol] = map[row, col];
+                            newMap[row, col] = new Field();
+                            heroX = newCol;
+                            heroY = newRow;
+                            Console.SetCursorPosition(0, 27);
+                            Console.Write("✨ АМУЛЕТ ПОДОБРАН! (+5 к урону против босса)   ");
+                            Thread.Sleep(500);
+                        }
+                        else if (newMap[newRow, newCol] is Crown crown)
+                        {
+                            hero.HasCrown = true;
+                            newMap[newRow, newCol] = map[row, col];
+                            newMap[row, col] = new Field();
+                            heroX = newCol;
+                            heroY = newRow;
+                            Console.SetCursorPosition(0, 27);
+                            Console.Write("✨ КОРОНА ПОДОБРАНА! (+8 к урону против босса)   ");
+                            Thread.Sleep(500);
+                        }
+                        else if (newMap[newRow, newCol] is Scepter scepter)
+                        {
+                            hero.HasScepter = true;
+                            newMap[newRow, newCol] = map[row, col];
+                            newMap[row, col] = new Field();
+                            heroX = newCol;
+                            heroY = newRow;
+                            Console.SetCursorPosition(0, 27);
+                            Console.Write("✨ СКИПЕТР ПОДОБРАН! (+12 к урону против босса)   ");
+                            Thread.Sleep(500);
+                        }
+                     
                         else if (newMap[newRow, newCol] is Boss boss)
                         {
                             bool bossDied = boss.SimpleFight(hero, this);
@@ -316,11 +340,8 @@ namespace ConsoleApp129
                                 newMap[row, col] = new Field();
                                 heroX = newCol;
                                 heroY = newRow;
-
-                                
                             }
                         }
-
                         else if (newMap[newRow, newCol] is Enemy enemy)
                         {
                             newMap[newRow, newCol] = map[row, col];
@@ -356,7 +377,6 @@ namespace ConsoleApp129
                             Console.SetCursorPosition(0, 27);
                             Console.Write("⚔ Бой! Получено " + enemy.Damage + " урона        ");
                         }
-
                         else if (newMap[newRow, newCol] is Door)
                         {
                             int enemiesAlive = 0;
@@ -384,7 +404,12 @@ namespace ConsoleApp129
 
                                 LevelManager.CurrentLevel++;
 
-                                if (LevelManager.CurrentLevel == 2)
+                                if (LevelManager.CurrentLevel == 4)
+                                {
+                                    NewLevel3 bossLevel = new NewLevel3();
+                                    map = bossLevel.Map_generation(hero);
+                                }
+                                else if (LevelManager.CurrentLevel == 2)
                                 {
                                     NewLevel1 winterlevel = new NewLevel1();
                                     map = winterlevel.Map_generation(hero);
@@ -409,7 +434,7 @@ namespace ConsoleApp129
 
             Array.Copy(newMap, map, map.Length);
         }
-        
+
         public MapObject GetObjectAt(int x, int y)
         {
             if (x >= 0 && x < 25 && y >= 0 && y < 25)
@@ -429,7 +454,6 @@ namespace ConsoleApp129
 
         public void GenerateNewLevel(int level)
         {
-         
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -438,7 +462,6 @@ namespace ConsoleApp129
                 }
             }
 
-           
             int enemyCount = 8 + level * 2;
             int treeCount = rand.Next(30, 50);
             int mountainCount = rand.Next(15, 25);
@@ -491,13 +514,11 @@ namespace ConsoleApp129
                 }
             }
 
-
             heroX = 12;
             heroY = 12;
             map[12, 12] = new Hero(12, 12);
             PlaceDoor();
 
-           
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -505,8 +526,6 @@ namespace ConsoleApp129
                     backBuffer[i, j] = ' ';
                 }
             }
-
-           
         }
 
         protected (int X, int Y) PlaceDoor()
@@ -528,6 +547,7 @@ namespace ConsoleApp129
             map[24, 24] = new Door() { X = 24, Y = 24 };
             return (24, 24);
         }
+
         public Hero FindHero()
         {
             for (int i = 0; i < map.GetLength(0); i++)
@@ -535,11 +555,10 @@ namespace ConsoleApp129
                     if (map[i, j] is Hero h) return h;
             return null;
         }
-        private void CheckAndSpawnAmulet(Hero hero)
-        {
-            if (hero.HasAmulet) return;  
 
-         
+        
+        public void CheckAndSpawnArtifact(Hero hero)
+        {
             int enemiesAlive = 0;
             for (int x = 0; x < 25; x++)
             {
@@ -550,9 +569,26 @@ namespace ConsoleApp129
                 }
             }
 
-            
             if (enemiesAlive == 0)
             {
+               
+                bool artifactExists = false;
+                for (int x = 0; x < 25; x++)
+                {
+                    for (int y = 0; y < 25; y++)
+                    {
+                        if (map[x, y] is Amulet || map[x, y] is Crown || map[x, y] is Scepter)
+                        {
+                            artifactExists = true;
+                            break;
+                        }
+                    }
+                    if (artifactExists) break;
+                }
+
+               
+                if (artifactExists) return;
+
                 int ax, ay;
                 do
                 {
@@ -560,15 +596,25 @@ namespace ConsoleApp129
                     ay = rand.Next(0, 25);
                 } while (map[ax, ay] is Field == false || (ax == 12 && ay == 12));
 
-                Amulet amulet = new Amulet(ax, ay);
-                amulet.IsVisible = true;  
-                map[ax, ay] = amulet;    
-
-                Console.SetCursorPosition(0, 28);
-                Console.Write("🔮 АМУЛЕТ ПОЯВИЛСЯ! Ищите звезду *        ");
+                if (LevelManager.CurrentLevel == 1 && !hero.HasAmulet)
+                {
+                    map[ax, ay] = new Amulet(ax, ay) { IsVisible = true };
+                    Console.SetCursorPosition(0, 28);
+                    Console.Write(" 🔮 АМУЛЕТ ПОЯВИЛСЯ! Ищите *        ");
+                }
+                else if (LevelManager.CurrentLevel == 2 && !hero.HasCrown)
+                {
+                    map[ax, ay] = new Crown(ax, ay) { IsVisible = true };
+                    Console.SetCursorPosition(0, 28);
+                    Console.Write(" 👑 КОРОНА ПОЯВИЛАСЬ! Ищите ^        ");
+                }
+                else if (LevelManager.CurrentLevel == 3 && !hero.HasScepter)
+                {
+                    map[ax, ay] = new Scepter(ax, ay) { IsVisible = true };
+                    Console.SetCursorPosition(0, 28);
+                    Console.Write(" 🗡 СКИПЕТР ПОЯВИЛСЯ! Ищите S        ");
+                }
             }
         }
-      
-
     }
 }

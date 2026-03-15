@@ -91,17 +91,6 @@ namespace ConsoleApp129.Core
                 }
             }
 
-       
-            int bossX, bossY;
-            do
-            {
-                bossX = rand.Next(0, 25);
-                bossY = rand.Next(0, 25);
-            } while (map[bossX, bossY] is Field == false || (bossX == 12 && bossY == 12));
-
-            map[bossX, bossY] = new Boss(bossX, bossY);
-
-        
             heroX = 12;
             heroY = 12;
             map[12, 12] = existingHero;

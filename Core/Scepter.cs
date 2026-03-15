@@ -1,14 +1,14 @@
 ﻿using System;
 namespace ConsoleApp129
 {
-    internal class Amulet : MapObject
+    internal class Scepter : MapObject
     {
         public int X { get; set; }
         public int Y { get; set; }
         public bool IsPicked { get; set; }
         public bool IsVisible { get; set; }
 
-        public Amulet(int x, int y)
+        public Scepter(int x, int y)
         {
             X = x;
             Y = y;
@@ -20,8 +20,8 @@ namespace ConsoleApp129
         {
             if (!IsPicked && IsVisible)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                return '*';
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                return 'I';
             }
             return ' ';
         }

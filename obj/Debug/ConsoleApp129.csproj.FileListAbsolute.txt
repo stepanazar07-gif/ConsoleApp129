@@ -22,3 +22,22 @@ C:\Users\drplx\Desktop\projects\stepa praktika\ConsoleApp129\bin\Debug\ConsoleAp
 C:\Users\drplx\Desktop\projects\stepa praktika\ConsoleApp129\obj\Debug\ConsoleApp129.exe
 C:\Users\drplx\Desktop\projects\stepa praktika\ConsoleApp129\obj\Debug\ConsoleApp129.pdb
 C:\Users\drplx\Desktop\projects\stepa praktika\ConsoleApp129\obj\Debug\ConsoleApp129.exe.config
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Buffers.dll
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.IO.Pipelines.dll
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Memory.dll
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Text.Encodings.Web.dll
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Text.Json.dll
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Buffers.xml
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.IO.Pipelines.xml
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Memory.xml
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Text.Encodings.Web.xml
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Text.Json.xml
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\Стёпа\Yandex.Disk\УП 02.01 Леликов\ПП для практики\ПП для практики 2\ConsoleApp129\obj\Debug\ConsoleA.A53ABBB8.Up2Date
