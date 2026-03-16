@@ -7,17 +7,26 @@ using ConsoleApp129.Core;
 
 namespace ConsoleApp129.Core
 {
+    /// <summary>
+    /// Генератор карты для уровня 3 (Пустынная тема)
+    /// </summary>
     internal class NewLevel2 : Map
     {
+        /// <summary>
+        /// Конструктор уровня 3
+        /// </summary>
         public NewLevel2() : base()
         {
         }
 
+        /// <summary>
+        /// Генерация карты пустынного уровня с кактусами и дюнами
+        /// </summary>
+        /// <param name="existingHero">Существующий объект героя для переноса</param>
+        /// <returns>Двумерный массив объектов карты MapObject[,]</returns>
         public MapObject[,] Map_generation(Hero existingHero)
         {
             Random rand = new Random();
-
-           
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -25,8 +34,6 @@ namespace ConsoleApp129.Core
                     map[i, j] = new Field();
                 }
             }
-
-          
             int cactusCount = rand.Next(12, 18);
             for (int c = 0; c < cactusCount; c++)
             {
@@ -37,8 +44,6 @@ namespace ConsoleApp129.Core
                     map[x, y] = new Cactus();
                 }
             }
-
-          
             int mountainCount = rand.Next(20, 30);
             for (int r = 0; r < mountainCount; r++)
             {
@@ -62,8 +67,6 @@ namespace ConsoleApp129.Core
                     }
                 }
             }
-
-
             int duneCount = rand.Next(8, 12);
             for (int d = 0; d < duneCount; d++)
             {
@@ -74,8 +77,6 @@ namespace ConsoleApp129.Core
                     map[x, y] = new SandDune();
                 }
             }
-
-          
             int enemyCount = 15;
             int enemiesPlaced = 0;
             while (enemiesPlaced < enemyCount)
@@ -90,13 +91,10 @@ namespace ConsoleApp129.Core
                     enemiesPlaced++;
                 }
             }
-
             heroX = 12;
             heroY = 12;
             map[12, 12] = existingHero;
-
             PlaceDoor();
-
             return map;
         }
     }

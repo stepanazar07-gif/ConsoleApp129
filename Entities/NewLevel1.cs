@@ -6,17 +6,26 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp129.Core
 {
+    /// <summary>
+    /// Генератор карты для уровня 2 (Зимняя тема)
+    /// </summary>
     internal class NewLevel1 : Map
     {
+        /// <summary>
+        /// Конструктор уровня 2
+        /// </summary>
         public NewLevel1() : base()
         {
         }
 
+        /// <summary>
+        /// Генерация карты зимнего уровня с ледяными горами
+        /// </summary>
+        /// <param name="existingHero">Существующий объект героя для переноса</param>
+        /// <returns>Двумерный массив объектов карты MapObject[,]</returns>
         public MapObject[,] Map_generation(Hero existingHero)
         {
             Random rand = new Random();
-
-
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -24,27 +33,21 @@ namespace ConsoleApp129.Core
                     map[i, j] = new Field();
                 }
             }
-
-
             int mountainCount = rand.Next(25, 35);
             for (int m = 0; m < mountainCount; m++)
             {
                 int x = rand.Next(0, 25);
                 int y = rand.Next(0, 25);
-
                 if (x != 12 || y != 12)
                 {
                     map[x, y] = new IceMountain();
                 }
             }
-
-
             int treeCount = rand.Next(10, 15);
             for (int t = 0; t < treeCount; t++)
             {
                 int x = rand.Next(0, 25);
                 int y = rand.Next(0, 25);
-
                 if ((x != 12 || y != 12) && map[x, y] is Field)
                 {
                     map[x, y] = new SnowTree();
@@ -63,15 +66,12 @@ namespace ConsoleApp129.Core
                     }
                 }
             }
-
-
-            int enemyCount = 1;
+            int enemyCount = 10;
             int enemiesPlaced = 0;
             while (enemiesPlaced < enemyCount)
             {
                 int x = rand.Next(0, 25);
                 int y = rand.Next(0, 25);
-
                 if (map[x, y] is Field && (x != 12 || y != 12))
                 {
                     WinterEnemy enemy = new WinterEnemy(x, y);
@@ -80,13 +80,9 @@ namespace ConsoleApp129.Core
                     enemiesPlaced++;
                 }
             }
-
-
             heroX = 12;
             heroY = 12;
             map[12, 12] = existingHero;
-
-
             var doorPos = PlaceDoor();
             return map;
         }
